@@ -2,8 +2,6 @@ import VersoBlog
 import ProofSketches
 import ProofSketches.MyTheme
 
-import ProofSketches.Posts.FirstPost
-import ProofSketches.Posts.SecondPost
 import ProofSketches.Posts.REU
 
 open Verso Genre Blog Site Syntax 
@@ -33,8 +31,6 @@ def linkTargets : Code.LinkTargets TraverseContext where
 def myblog : Site := site ProofSketches.FrontPage /
   static "assets" ← "assets"
   "posts" ProofSketches.Posts with
-    ProofSketches.Posts.FirstPost
-    ProofSketches.Posts.SecondPost
     ProofSketches.Posts.REU
 
 def main := blogMain theme myblog (linkTargets := linkTargets) (options := ["--output", "docs"])

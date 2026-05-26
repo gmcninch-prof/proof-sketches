@@ -1,128 +1,115 @@
 {"9":
- "<code class=\"docstring\">A `section`/`end` pair delimits the scope of `variable`, `include`, `open`, `set_option`, and `local`\ncommands. Sections can be nested. `section &lt;id&gt;` provides a label to the section that has to appear\nwith the matching `end`. In either case, the `end` can be omitted, in which case the section is\nclosed at the end of the file.\n</code>",
- "84":
- "<code>Polynomial.{u_1} (R : Type u_1) [Semiring R] : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">`Polynomial R` is the type of univariate polynomials over `R`,\ndenoted as `R[X]` within the `Polynomial` namespace.\n\nPolynomials should be seen as (semi-)rings with the additional constructor `X`.\nThe embedding from `R` is called `C`. </code>",
- "83": "<code>Invertible 2</code>",
- "82": "<code>TensorProduct k k[X] V</code>",
- "81":
- "<code>QuadraticForm.baseChange.{uR, uA, uM₂} {R : Type uR} (A : Type uA) {M₂ : Type uM₂} [CommRing R] [CommRing A]\n  [AddCommGroup M₂] [Algebra R A] [Module R M₂] [Invertible 2] (Q : QuadraticForm R M₂) :\n  QuadraticForm A (TensorProduct R A M₂)</code><span class=\"sep\"></span><code class=\"docstring\">The base change of a quadratic form. </code>",
- "80": "<code>(QuadraticForm.baseChange (RatFunc k) φ) v = ↑f</code>",
- "8": "<code>Nat</code>",
- "79":
- "<code>RatFunc.{u} (K : Type u) [CommRing K] : Type u</code><span class=\"sep\"></span><code class=\"docstring\">`RatFunc K` is `K(X)`, the field of rational functions over `K`.\n\nThe inclusion of polynomials into `RatFunc` is `algebraMap K[X] K⟮X⟯`,\nthe maps between `K⟮X⟯` and another field of fractions of `K[X]`,\nespecially `FractionRing K[X]`, are given by `IsLocalization.algEquiv`.\n</code>",
- "78":
- "<code>TensorProduct.{u_1, u_7, u_8} (R : Type u_1) [CommSemiring R] (M : Type u_7) (N : Type u_8) [AddCommMonoid M]\n  [AddCommMonoid N] [Module R M] [Module R N] : Type (max u_7 u_8)</code><span class=\"sep\"></span><code class=\"docstring\">The tensor product of two modules `M` and `N` over the same commutative semiring `R`.\nThe localized notations are `M ⊗ N` and `M ⊗[R] N`, accessed by `open scoped TensorProduct`. </code>",
- "77": "<code>TensorProduct k (RatFunc k) V</code>",
- "76": "<code>k[X]</code>",
- "75": "<code>k</code>",
- "74":
- "<code>Invertible.{u} {α : Type u} [Mul α] [One α] (a : α) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">`Invertible a` gives a two-sided multiplicative inverse of `a`. </code>",
- "73":
- "<code>QuadraticForm.{u, v} (R : Type u) (M : Type v) [CommSemiring R] [AddCommMonoid M] [Module R M] : Type (max u v)</code><span class=\"sep\"></span><code class=\"docstring\">A quadratic form on a module. </code>",
- "72": "<code>QuadraticForm k V</code>",
- "71":
- "<code>cassels_pfister {k V : Type} [Field k] [AddCommGroup V] [Module k V] (φ : QuadraticForm k V) [Invertible 2] (f : k[X])\n  (v : TensorProduct k (RatFunc k) V) (h : (QuadraticForm.baseChange (RatFunc k) φ) v = ↑f) :\n  ∃ w, (QuadraticForm.baseChange k[X] φ) w = f</code>",
- "70":
- "<code>Or (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Or a b`, or `a ∨ b`, is the disjunction of propositions. There are two\nconstructors for `Or`, called `Or.inl : a → a ∨ b` and `Or.inr : b → a ∨ b`,\nand you can use `match` or `cases` to destruct an `Or` assumption into the\ntwo cases.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∨` in identifiers is `or`.\n\n * The recommended spelling of `\\/` in identifiers is `or` (prefer `∨` over `\\/`).</code>",
- "7":
- "<code class=\"docstring\">`#eval e` evaluates the expression `e` by compiling and evaluating it.\n\n* The command attempts to use `ToExpr`, `Repr`, or `ToString` instances to print the result.\n* If `e` is a monadic value of type `m ty`, then the command tries to adapt the monad `m`\n  to one of the monads that `#eval` supports, which include `IO`, `CoreM`, `MetaM`, `TermElabM`, and `CommandElabM`.\n  Users can define `MonadEval` instances to extend the list of supported monads.\n\nThe `#eval` command gracefully degrades in capability depending on what is imported.\nImporting the `Lean.Elab.Command` module provides full capabilities.\n\nDue to unsoundness, `#eval` refuses to evaluate expressions that depend on `sorry`, even indirectly,\nsince the presence of `sorry` can lead to runtime instability and crashes.\nThis check can be overridden with the `#eval! e` command.\n\nOptions:\n* If `eval.pp` is true (default: true) then tries to use `ToExpr` instances to make use of the\n  usual pretty printer. Otherwise, only tries using `Repr` and `ToString` instances.\n* If `eval.type` is true (default: false) then pretty prints the type of the evaluated value.\n* If `eval.derive.repr` is true (default: true) then attempts to auto-derive a `Repr` instance\n  when there is no other way to print the result.\n\nSee also: `#reduce e` for evaluation by term reduction.\n</code>",
- "69": "<code>FiniteDimensional k V</code>",
- "68":
- "<code>LinearMap.BilinForm.IsSymm.{u_1, u_2} {R : Type u_1} {M : Type u_2} [CommSemiring R] [AddCommMonoid M] [Module R M]\n  (B : BilinForm R M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The proposition that a bilinear form is symmetric </code>",
- "67":
- "<code>LinearMap.BilinForm.IsAlt.{u_1, u_2} {R : Type u_1} {M : Type u_2} [CommSemiring R] [AddCommMonoid M] [Module R M]\n  (B : BilinForm R M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The proposition that a bilinear form is alternating </code>",
- "66":
- "<code>LinearMap.BilinForm.IsRefl.{u_1, u_2} {R : Type u_1} {M : Type u_2} [CommSemiring R] [AddCommMonoid M] [Module R M]\n  (B : BilinForm R M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The proposition that a bilinear form is reflexive </code>",
- "65": "<code>β.IsRefl</code>",
- "64": "<code>BilinForm k V</code>",
- "63":
- "<code>refl_is_alt_or_symm {k V : Type} [Field k] [AddCommGroup V] [Module k V] {β : BilinForm k V} (h : β.IsRefl)\n  [FiniteDimensional k V] : β.IsAlt ∨ β.IsSymm</code>",
- "62": "<code>FiniteDimensional k V₂</code>",
- "61": "<code>FiniteDimensional k V₁</code>",
- "60": "<code>Module k V</code>",
- "6": "<code>Expr.plus : Expr → Expr → Expr</code>",
- "59": "<code>AddCommGroup V</code>",
- "58":
- "<code>Module.finrank.{u_1, u_2} (R : Type u_1) (M : Type u_2) [Semiring R] [AddCommMonoid M] [Module R M] : ℕ</code><span class=\"sep\"></span><code class=\"docstring\">The rank of a module as a natural number.\n\nFor a finite-dimensional vector space `V` over a field `k`, `Module.finrank k V` is equal to\nthe dimension of `V` over `k`.\n\nFor a general module `M` over a ring `R`, `Module.finrank R M` is defined to be the supremum of the\ncardinalities of the `R`-linearly independent subsets of `M`, if this supremum is finite. It is\ndefined by convention to be `0` if this supremum is infinite. See `Module.rank` for a\ncardinal-valued version where infinite rank modules have rank an infinite cardinal.\n\nNote that if `R` is not a field then there can exist modules `M` with `¬(Module.Finite R M)` but\n`finrank R M ≠ 0`. For example `ℚ` has `finrank` equal to `1` over `ℤ`, because the nonempty\n`ℤ`-linearly independent subsets of `ℚ` are precisely the nonzero singletons. </code>",
- "57": "<code>finrank k V₁ = finrank k V₂</code>",
- "56":
- "<code>FiniteDimensional.{u_1, u_2} (K : Type u_1) (V : Type u_2) [DivisionRing K] [AddCommGroup V] [Module K V] : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`FiniteDimensional` vector spaces are defined to be finite modules.\nUse `Module.Basis.finiteDimensional_of_finite` to prove finite dimension from another definition. </code>",
- "55": "<code>β₂.Nondegenerate</code>",
- "54":
- "<code>LinearMap.BilinForm.Nondegenerate.{u_1, u_2} {R : Type u_1} {M : Type u_2} [CommSemiring R] [AddCommMonoid M]\n  [Module R M] (B : BilinForm R M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A nondegenerate bilinear form is a bilinear form that is both left-separating and\nright-separating, i.e. if `B x y = 0` for all `y` then `x = 0`, and if `B x y = 0` for all `x` then\n`y = 0`.\n\nNote that these conditions are independent of each other in general, but in the common case of\nfinite-dimensional vector spaces (or, more generally, finite free modules over an integral\ndomain), either of these conditions implies the other; see\n`LinearMap.BilinForm.Nondegenerate.ofSeparatingLeft` and\n`LinearMap.BilinForm.nondegenerate_iff_ker_eq_bot`, proved in a later file.\n</code>",
- "53": "<code>β₁.Nondegenerate</code>",
- "52": "<code>IsAlt β₂</code>",
- "51":
- "<code>LinearMap.IsAlt.{u_1, u_2, u_5, u_6} {R : Type u_1} {R₁ : Type u_2} {M : Type u_5} {M₁ : Type u_6} [CommSemiring R]\n  [AddCommMonoid M] [Module R M] [CommSemiring R₁] [AddCommMonoid M₁] [Module R₁ M₁] {I₁ I₂ : R₁ →+* R}\n  (B : M₁ →ₛₗ[I₁] M₁ →ₛₗ[I₂] M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The proposition that a sesquilinear map is alternating </code>",
- "50": "<code>IsAlt β₁</code>",
- "5":
- "<code>Nat : Type</code><span class=\"sep\"></span><code class=\"docstring\">The natural numbers, starting at zero.\n\nThis type is special-cased by both the kernel and the compiler, and overridden with an efficient\nimplementation. Both use a fast arbitrary-precision arithmetic library (usually\n[GMP](https://gmplib.org/)); at runtime, `Nat` values that are sufficiently small are unboxed.\n</code>",
- "49":
- "<code>alternate_iso {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂]\n  {β₁ : BilinForm k V₁} {β₂ : BilinForm k V₂} (balt₁ : IsAlt β₁) (balt₂ : IsAlt β₂) (hd₁ : β₁.Nondegenerate)\n  (hd₂ : β₂.Nondegenerate) [FiniteDimensional k V₁] [FiniteDimensional k V₂] (h : finrank k V₁ = finrank k V₂) :\n  Isometries β₁ β₂</code>",
- "48":
- "<code class=\"docstring\">The `sorry` tactic is a temporary placeholder for an incomplete tactic proof,\nclosing the main goal using `exact sorry`.\n\nThis is intended for stubbing-out incomplete parts of a proof while still having a syntactically correct proof skeleton.\nLean will give a warning whenever a proof uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a theorem depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n</code>",
- "47":
- "<code>Eq.{u_1} {α : Sort u_1} : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The equality relation. It has one introduction rule, `Eq.refl`.\nWe use `a = b` as notation for `Eq a b`.\nA fundamental property of equality is that it is an equivalence relation.\n```\nvariable (α : Type) (a b c d : α)\nvariable (hab : a = b) (hcb : c = b) (hcd : c = d)\n\nexample : a = d :=\n  Eq.trans (Eq.trans hab (Eq.symm hcb)) hcd\n```\nEquality is much more than an equivalence relation, however. It has the important property that every assertion\nrespects the equivalence, in the sense that we can substitute equal expressions without changing the truth value.\nThat is, given `h1 : a = b` and `h2 : p a`, we can construct a proof for `p b` using substitution: `Eq.subst h1 h2`.\nExample:\n```\nexample (α : Type) (a b : α) (p : α → Prop)\n        (h1 : a = b) (h2 : p a) : p b :=\n  Eq.subst h1 h2\n\nexample (α : Type) (a b : α) (p : α → Prop)\n    (h1 : a = b) (h2 : p a) : p b :=\n  h1 ▸ h2\n```\nThe triangle in the second presentation is a macro built on top of `Eq.subst` and `Eq.symm`, and you can enter it by typing `\\t`.\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `=` in identifiers is `eq`.</code>",
- "46":
- "<code>Iff (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">If and only if, or logical bi-implication. `a ↔ b` means that `a` implies `b` and vice versa.\nBy `propext`, this implies that `a` and `b` are equal and hence any expression involving `a`\nis equivalent to the corresponding expression with `b` instead.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `↔` in identifiers is `iff`.\n\n * The recommended spelling of `&lt;-&gt;` in identifiers is `iff` (prefer `↔` over `&lt;-&gt;`).</code>",
- "45": "<code>DecidableEq ι</code>",
- "44": "<code>Fintype ι</code>",
- "43": "<code>Module k V₂</code>",
- "42": "<code>AddCommGroup V₂</code>",
- "41": "<code>Module k V₁</code>",
- "40": "<code>AddCommGroup V₁</code>",
- "4": "<code>Expr.nat : Nat → Expr</code>",
- "39": "<code>Field k</code>",
- "38":
- "<code class=\"docstring\">`by tac` constructs a term of the expected type by running the tactic(s) `tac`. </code>",
- "37":
- "<code>LinearMap.BilinForm.toMatrix.{u_1, u_2, u_5} {R₁ : Type u_1} {M₁ : Type u_2} [CommSemiring R₁] [AddCommMonoid M₁]\n  [Module R₁ M₁] {n : Type u_5} [Fintype n] [DecidableEq n] (b : Basis n R₁ M₁) : BilinForm R₁ M₁ ≃ₗ[R₁] Matrix n n R₁</code><span class=\"sep\"></span><code class=\"docstring\">`BilinForm.toMatrix b` is the equivalence between `R`-bilinear forms on `M` and\n`n`-by-`n` matrices with entries in `R`, if `b` is an `R`-basis for `M`. </code>",
- "36":
- "<code>BilinForm.toMatrix.{u_1, u_2, u_5} {R₁ : Type u_1} {M₁ : Type u_2} [CommSemiring R₁] [AddCommMonoid M₁] [Module R₁ M₁]\n  {n : Type u_5} [Fintype n] [DecidableEq n] (b : Basis n R₁ M₁) : BilinForm R₁ M₁ ≃ₗ[R₁] Matrix n n R₁</code><span class=\"sep\"></span><code class=\"docstring\">**Alias** of `LinearMap.BilinForm.toMatrix`.\n\n---\n\n`BilinForm.toMatrix b` is the equivalence between `R`-bilinear forms on `M` and\n`n`-by-`n` matrices with entries in `R`, if `b` is an `R`-basis for `M`. </code>",
- "35": "<code>Basis ι k V₂</code>",
- "34":
- "<code>Nonempty.{u} (α : Sort u) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Nonempty α` is a typeclass that says that `α` is not an empty type,\nthat is, there exists an element in the type. It differs from `Inhabited α`\nin that `Nonempty α` is a `Prop`, which means that it does not actually carry\nan element of `α`, only a proof that *there exists* such an element.\nGiven `Nonempty α`, you can construct an element of `α` *nonconstructively*\nusing `Classical.choice`.\n</code>",
- "33":
- "<code>Module.Basis.{u_1, u_3, u_6} (ι : Type u_1) (R : Type u_3) (M : Type u_6) [Semiring R] [AddCommMonoid M] [Module R M] :\n  Type (max (max u_1 u_3) u_6)</code><span class=\"sep\"></span><code class=\"docstring\">A `Basis ι R M` for a module `M` is the type of `ι`-indexed `R`-bases of `M`.\n\nThe basis vectors are available as `DFunLike.coe (b : Basis ι R M) : ι → M`.\nTo turn a linear independent family of vectors spanning `M` into a basis, use `Basis.mk`.\nThey are internally represented as linear equivs `M ≃ₗ[R] (ι →₀ R)`,\navailable as `Basis.repr`.\n</code>",
- "32": "<code>Basis ι k V₁</code>",
- "31":
- "<code>DecidableEq.{u} (α : Sort u) : Sort (max 1 u)</code><span class=\"sep\"></span><code class=\"docstring\">Propositional equality is `Decidable` for all elements of a type.\n\nIn other words, an instance of `DecidableEq α` is a means of deciding the proposition `a = b` is\nfor all `a b : α`.\n</code>",
- "30":
- "<code>Fintype.{u_4} (α : Type u_4) : Type u_4</code><span class=\"sep\"></span><code class=\"docstring\">`Fintype α` means that `α` is finite, i.e. there are only\nfinitely many distinct elements of type `α`. The evidence of this\nis a finset `elems` (a list up to permutation without duplicates),\ntogether with a proof that everything of type `α` is in the list. </code>",
- "3":
- "<code>String : Type</code><span class=\"sep\"></span><code class=\"docstring\">A string is a sequence of Unicode scalar values.\n\nAt runtime, strings are represented by [dynamic arrays](https://en.wikipedia.org/wiki/Dynamic_array)\nof bytes using the UTF-8 encoding. Both the size in bytes (`String.utf8ByteSize`) and in characters\n(`String.length`) are cached and take constant time. Many operations on strings perform in-place\nmodifications when the reference to the string is unique.\n</code>",
- "29":
- "<code>equiv_via_matrices {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂] {ι : Type}\n  [Fintype ι] [DecidableEq ι] (β₁ : BilinForm k V₁) (β₂ : BilinForm k V₂) (b₁ : Basis ι k V₁) :\n  Nonempty (Isometries β₁ β₂) ↔ ∃ b₂, (BilinForm.toMatrix b₁) β₁ = (BilinForm.toMatrix b₂) β₂</code>",
- "28": "<code><span class=\"literal string\">\"]\"</span> : String</code>",
- "27": "<code><span class=\"literal string\">\",\"</span> : String</code>",
- "26": "<code><span class=\"literal string\">\"≃[\"</span> : String</code>",
- "25": "<code>Lean.TSyntax `term</code>",
- "24": "<code>V₁ ≃ₗ[k] V₂</code>",
- "23": "<code>V₁</code>",
- "22":
- "<code>Isometries.compat {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂]\n  {β₁ : BilinForm k V₁} {β₂ : BilinForm k V₂} (self : Isometries β₁ β₂) (x y : V₁) :\n  (β₁ x) y = (β₂ (self.equiv x)) (self.equiv y)</code>",
- "21":
- "<code>Isometries.equiv {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂]\n  {β₁ : BilinForm k V₁} {β₂ : BilinForm k V₂} (self : Isometries β₁ β₂) : V₁ ≃ₗ[k] V₂</code>",
- "20": "<code>BilinForm k V₂</code>",
- "2": "<code>Expr.var : String → Expr</code>",
- "19": "<code>BilinForm k V₁</code>",
- "18":
  "<code>Isometries {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂]\n  (β₁ : BilinForm k V₁) (β₂ : BilinForm k V₂) : Type</code>",
- "17":
+ "8":
  "<code>Module.{u, v} (R : Type u) (M : Type v) [Semiring R] [AddCommMonoid M] : Type (max u v)</code><span class=\"sep\"></span><code class=\"docstring\">A module is a generalization of vector spaces to a scalar semiring.\nIt consists of a scalar semiring `R` and an additive monoid of \"vectors\" `M`,\nconnected by a \"scalar multiplication\" operation `r • x : M`\n(where `r : R` and `x : M`) with some natural associativity and\ndistributivity axioms similar to those on a ring. </code>",
- "16":
+ "75":
+ "<code>Polynomial.{u_1} (R : Type u_1) [Semiring R] : Type u_1</code><span class=\"sep\"></span><code class=\"docstring\">`Polynomial R` is the type of univariate polynomials over `R`,\ndenoted as `R[X]` within the `Polynomial` namespace.\n\nPolynomials should be seen as (semi-)rings with the additional constructor `X`.\nThe embedding from `R` is called `C`. </code>",
+ "74": "<code>Invertible 2</code>",
+ "73": "<code>TensorProduct k k[X] V</code>",
+ "72":
+ "<code>QuadraticForm.baseChange.{uR, uA, uM₂} {R : Type uR} (A : Type uA) {M₂ : Type uM₂} [CommRing R] [CommRing A]\n  [AddCommGroup M₂] [Algebra R A] [Module R M₂] [Invertible 2] (Q : QuadraticForm R M₂) :\n  QuadraticForm A (TensorProduct R A M₂)</code><span class=\"sep\"></span><code class=\"docstring\">The base change of a quadratic form. </code>",
+ "71": "<code>(QuadraticForm.baseChange (RatFunc k) φ) v = ↑f</code>",
+ "70":
+ "<code>RatFunc.{u} (K : Type u) [CommRing K] : Type u</code><span class=\"sep\"></span><code class=\"docstring\">`RatFunc K` is `K(X)`, the field of rational functions over `K`.\n\nThe inclusion of polynomials into `RatFunc` is `algebraMap K[X] K⟮X⟯`,\nthe maps between `K⟮X⟯` and another field of fractions of `K[X]`,\nespecially `FractionRing K[X]`, are given by `IsLocalization.algEquiv`.\n</code>",
+ "7":
  "<code>AddCommGroup.{u} (G : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">An additive commutative group is an additive group with commutative `(+)`. </code>",
- "15":
+ "69":
+ "<code>TensorProduct.{u_1, u_7, u_8} (R : Type u_1) [CommSemiring R] (M : Type u_7) (N : Type u_8) [AddCommMonoid M]\n  [AddCommMonoid N] [Module R M] [Module R N] : Type (max u_7 u_8)</code><span class=\"sep\"></span><code class=\"docstring\">The tensor product of two modules `M` and `N` over the same commutative semiring `R`.\nThe localized notations are `M ⊗ N` and `M ⊗[R] N`, accessed by `open scoped TensorProduct`. </code>",
+ "68": "<code>TensorProduct k (RatFunc k) V</code>",
+ "67": "<code>k[X]</code>",
+ "66": "<code>k</code>",
+ "65":
+ "<code>Invertible.{u} {α : Type u} [Mul α] [One α] (a : α) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">`Invertible a` gives a two-sided multiplicative inverse of `a`. </code>",
+ "64":
+ "<code>QuadraticForm.{u, v} (R : Type u) (M : Type v) [CommSemiring R] [AddCommMonoid M] [Module R M] : Type (max u v)</code><span class=\"sep\"></span><code class=\"docstring\">A quadratic form on a module. </code>",
+ "63": "<code>QuadraticForm k V</code>",
+ "62":
+ "<code>cassels_pfister {k V : Type} [Field k] [AddCommGroup V] [Module k V] (φ : QuadraticForm k V) [Invertible 2] (f : k[X])\n  (v : TensorProduct k (RatFunc k) V) (h : (QuadraticForm.baseChange (RatFunc k) φ) v = ↑f) :\n  ∃ w, (QuadraticForm.baseChange k[X] φ) w = f</code>",
+ "61":
+ "<code>Or (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Or a b`, or `a ∨ b`, is the disjunction of propositions. There are two\nconstructors for `Or`, called `Or.inl : a → a ∨ b` and `Or.inr : b → a ∨ b`,\nand you can use `match` or `cases` to destruct an `Or` assumption into the\ntwo cases.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∨` in identifiers is `or`.\n\n * The recommended spelling of `\\/` in identifiers is `or` (prefer `∨` over `\\/`).</code>",
+ "60": "<code>FiniteDimensional k V</code>",
+ "6":
  "<code>Field.{u} (K : Type u) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">A `Field` is a `CommRing` with multiplicative inverses for nonzero elements.\n\nAn instance of `Field K` includes maps `ratCast : ℚ → K` and `qsmul : ℚ → K → K`.\nThose two fields are needed to implement the `DivisionRing K → Algebra ℚ K` instance since we need\nto control the specific definitions for some special cases of `K` (in particular `K = ℚ` itself).\nSee also note [forgetful inheritance].\n\nIf the field has positive characteristic `p`, our division by zero convention forces\n`ratCast (1 / p) = 1 / 0 = 0`. </code>",
- "14":
+ "59":
+ "<code>LinearMap.BilinForm.IsSymm.{u_1, u_2} {R : Type u_1} {M : Type u_2} [CommSemiring R] [AddCommMonoid M] [Module R M]\n  (B : BilinForm R M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The proposition that a bilinear form is symmetric </code>",
+ "58":
+ "<code>LinearMap.BilinForm.IsAlt.{u_1, u_2} {R : Type u_1} {M : Type u_2} [CommSemiring R] [AddCommMonoid M] [Module R M]\n  (B : BilinForm R M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The proposition that a bilinear form is alternating </code>",
+ "57":
+ "<code>LinearMap.BilinForm.IsRefl.{u_1, u_2} {R : Type u_1} {M : Type u_2} [CommSemiring R] [AddCommMonoid M] [Module R M]\n  (B : BilinForm R M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The proposition that a bilinear form is reflexive </code>",
+ "56": "<code>β.IsRefl</code>",
+ "55": "<code>BilinForm k V</code>",
+ "54":
+ "<code>refl_is_alt_or_symm {k V : Type} [Field k] [AddCommGroup V] [Module k V] {β : BilinForm k V} (h : β.IsRefl)\n  [FiniteDimensional k V] : β.IsAlt ∨ β.IsSymm</code>",
+ "53": "<code>FiniteDimensional k V₂</code>",
+ "52": "<code>FiniteDimensional k V₁</code>",
+ "51": "<code>Module k V</code>",
+ "50": "<code>AddCommGroup V</code>",
+ "5":
  "<code class=\"docstring\">A type universe. `Type ≡ Type 0`, `Type u ≡ Sort (u + 1)`. </code>",
- "13": "<code>Type</code>",
- "12":
+ "49":
+ "<code>Module.finrank.{u_1, u_2} (R : Type u_1) (M : Type u_2) [Semiring R] [AddCommMonoid M] [Module R M] : ℕ</code><span class=\"sep\"></span><code class=\"docstring\">The rank of a module as a natural number.\n\nFor a finite-dimensional vector space `V` over a field `k`, `Module.finrank k V` is equal to\nthe dimension of `V` over `k`.\n\nFor a general module `M` over a ring `R`, `Module.finrank R M` is defined to be the supremum of the\ncardinalities of the `R`-linearly independent subsets of `M`, if this supremum is finite. It is\ndefined by convention to be `0` if this supremum is infinite. See `Module.rank` for a\ncardinal-valued version where infinite rank modules have rank an infinite cardinal.\n\nNote that if `R` is not a field then there can exist modules `M` with `¬(Module.Finite R M)` but\n`finrank R M ≠ 0`. For example `ℚ` has `finrank` equal to `1` over `ℤ`, because the nonempty\n`ℤ`-linearly independent subsets of `ℚ` are precisely the nonzero singletons. </code>",
+ "48": "<code>finrank k V₁ = finrank k V₂</code>",
+ "47":
+ "<code>FiniteDimensional.{u_1, u_2} (K : Type u_1) (V : Type u_2) [DivisionRing K] [AddCommGroup V] [Module K V] : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`FiniteDimensional` vector spaces are defined to be finite modules.\nUse `Module.Basis.finiteDimensional_of_finite` to prove finite dimension from another definition. </code>",
+ "46": "<code>β₂.Nondegenerate</code>",
+ "45":
+ "<code>LinearMap.BilinForm.Nondegenerate.{u_1, u_2} {R : Type u_1} {M : Type u_2} [CommSemiring R] [AddCommMonoid M]\n  [Module R M] (B : BilinForm R M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">A nondegenerate bilinear form is a bilinear form that is both left-separating and\nright-separating, i.e. if `B x y = 0` for all `y` then `x = 0`, and if `B x y = 0` for all `x` then\n`y = 0`.\n\nNote that these conditions are independent of each other in general, but in the common case of\nfinite-dimensional vector spaces (or, more generally, finite free modules over an integral\ndomain), either of these conditions implies the other; see\n`LinearMap.BilinForm.Nondegenerate.ofSeparatingLeft` and\n`LinearMap.BilinForm.nondegenerate_iff_ker_eq_bot`, proved in a later file.\n</code>",
+ "44": "<code>β₁.Nondegenerate</code>",
+ "43": "<code>IsAlt β₂</code>",
+ "42":
+ "<code>LinearMap.IsAlt.{u_1, u_2, u_5, u_6} {R : Type u_1} {R₁ : Type u_2} {M : Type u_5} {M₁ : Type u_6} [CommSemiring R]\n  [AddCommMonoid M] [Module R M] [CommSemiring R₁] [AddCommMonoid M₁] [Module R₁ M₁] {I₁ I₂ : R₁ →+* R}\n  (B : M₁ →ₛₗ[I₁] M₁ →ₛₗ[I₂] M) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">The proposition that a sesquilinear map is alternating </code>",
+ "41": "<code>IsAlt β₁</code>",
+ "40":
+ "<code>alternate_iso {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂]\n  {β₁ : BilinForm k V₁} {β₂ : BilinForm k V₂} (balt₁ : IsAlt β₁) (balt₂ : IsAlt β₂) (hd₁ : β₁.Nondegenerate)\n  (hd₂ : β₂.Nondegenerate) [FiniteDimensional k V₁] [FiniteDimensional k V₂] (h : finrank k V₁ = finrank k V₂) :\n  Isometries β₁ β₂</code>",
+ "4": "<code>Type</code>",
+ "39":
+ "<code class=\"docstring\">The `sorry` tactic is a temporary placeholder for an incomplete tactic proof,\nclosing the main goal using `exact sorry`.\n\nThis is intended for stubbing-out incomplete parts of a proof while still having a syntactically correct proof skeleton.\nLean will give a warning whenever a proof uses `sorry`, so you aren't likely to miss it,\nbut you can double check if a theorem depends on `sorry` by looking for `sorryAx` in the output\nof the `#print axioms my_thm` command, the axiom used by the implementation of `sorry`.\n</code>",
+ "38":
+ "<code>Eq.{u_1} {α : Sort u_1} : α → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The equality relation. It has one introduction rule, `Eq.refl`.\nWe use `a = b` as notation for `Eq a b`.\nA fundamental property of equality is that it is an equivalence relation.\n```\nvariable (α : Type) (a b c d : α)\nvariable (hab : a = b) (hcb : c = b) (hcd : c = d)\n\nexample : a = d :=\n  Eq.trans (Eq.trans hab (Eq.symm hcb)) hcd\n```\nEquality is much more than an equivalence relation, however. It has the important property that every assertion\nrespects the equivalence, in the sense that we can substitute equal expressions without changing the truth value.\nThat is, given `h1 : a = b` and `h2 : p a`, we can construct a proof for `p b` using substitution: `Eq.subst h1 h2`.\nExample:\n```\nexample (α : Type) (a b : α) (p : α → Prop)\n        (h1 : a = b) (h2 : p a) : p b :=\n  Eq.subst h1 h2\n\nexample (α : Type) (a b : α) (p : α → Prop)\n    (h1 : a = b) (h2 : p a) : p b :=\n  h1 ▸ h2\n```\nThe triangle in the second presentation is a macro built on top of `Eq.subst` and `Eq.symm`, and you can enter it by typing `\\t`.\nFor more information: [Equality](https://lean-lang.org/theorem_proving_in_lean4/quantifiers_and_equality.html#equality)\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `=` in identifiers is `eq`.</code>",
+ "37":
+ "<code>Iff (a b : Prop) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">If and only if, or logical bi-implication. `a ↔ b` means that `a` implies `b` and vice versa.\nBy `propext`, this implies that `a` and `b` are equal and hence any expression involving `a`\nis equivalent to the corresponding expression with `b` instead.\n\n\nConventions for notations in identifiers:\n\n * The recommended spelling of `↔` in identifiers is `iff`.\n\n * The recommended spelling of `&lt;-&gt;` in identifiers is `iff` (prefer `↔` over `&lt;-&gt;`).</code>",
+ "36": "<code>DecidableEq ι</code>",
+ "35": "<code>Fintype ι</code>",
+ "34": "<code>Module k V₂</code>",
+ "33": "<code>AddCommGroup V₂</code>",
+ "32": "<code>Module k V₁</code>",
+ "31": "<code>AddCommGroup V₁</code>",
+ "30": "<code>Field k</code>",
+ "3":
  "<code class=\"docstring\">Declares one or more typed variables, or modifies whether already-declared variables are\n  implicit.\n\nIntroduces variables that can be used in definitions within the same `namespace` or `section` block.\nWhen a definition mentions a variable, Lean will add it as an argument of the definition. This is\nuseful in particular when writing many definitions that have parameters in common (see below for an\nexample).\n\nVariable declarations have the same flexibility as regular function parameters. In particular they\ncan be [explicit, implicit][binder docs], or [instance implicit][tpil classes] (in which case they\ncan be anonymous). This can be changed, for instance one can turn explicit variable `x` into an\nimplicit one with `variable {x}`. Note that currently, you should avoid changing how variables are\nbound and declare new variables at the same time; see [issue 2789] for more on this topic.\n\nIn *theorem bodies* (i.e. proofs), variables are not included based on usage in order to ensure that\nchanges to the proof cannot change the statement of the overall theorem. Instead, variables are only\navailable to the proof if they have been mentioned in the theorem header or in an `include` command\nor are instance implicit and depend only on such variables.\n\nSee [*Variables and Sections* from Theorem Proving in Lean][tpil vars] for a more detailed\ndiscussion.\n\n[tpil vars]:\nhttps://lean-lang.org/theorem_proving_in_lean4/dependent_type_theory.html#variables-and-sections\n(Variables and Sections on Theorem Proving in Lean) [tpil classes]:\nhttps://lean-lang.org/theorem_proving_in_lean4/type_classes.html (Type classes on Theorem Proving in\nLean) [binder docs]:\nhttps://leanprover-community.github.io/mathlib4_docs/Lean/Expr.html#Lean.BinderInfo (Documentation\nfor the BinderInfo type) [issue 2789]: https://github.com/leanprover/lean4/issues/2789 (Issue 2789\non github)\n\n## Examples\n\n```lean\nsection\n  variable\n    {α : Type u}      -- implicit\n    (a : α)           -- explicit\n    [instBEq : BEq α] -- instance implicit, named\n    [Hashable α]      -- instance implicit, anonymous\n\n  def isEqual (b : α) : Bool :=\n    a == b\n\n  #check isEqual\n  -- isEqual.{u} {α : Type u} (a : α) [instBEq : BEq α] (b : α) : Bool\n\n  variable\n    {a} -- `a` is implicit now\n\n  def eqComm {b : α} := a == b ↔ b == a\n\n  #check eqComm\n  -- eqComm.{u} {α : Type u} {a : α} [instBEq : BEq α] {b : α} : Prop\nend\n```\n\nThe following shows a typical use of `variable` to factor out definition arguments:\n\n```lean\nvariable (Src : Type)\n\nstructure Logger where\n  trace : List (Src × String)\n#check Logger\n-- Logger (Src : Type) : Type\n\nnamespace Logger\n  -- switch `Src : Type` to be implicit until the `end Logger`\n  variable {Src}\n\n  def empty : Logger Src where\n    trace := []\n  #check empty\n  -- Logger.empty {Src : Type} : Logger Src\n\n  variable (log : Logger Src)\n\n  def len :=\n    log.trace.length\n  #check len\n  -- Logger.len {Src : Type} (log : Logger Src) : Nat\n\n  variable (src : Src) [BEq Src]\n\n  -- at this point all of `log`, `src`, `Src` and the `BEq` instance can all become arguments\n\n  def filterSrc :=\n    log.trace.filterMap\n      fun (src', str') =&gt; if src' == src then some str' else none\n  #check filterSrc\n  -- Logger.filterSrc {Src : Type} (log : Logger Src) (src : Src) [inst✝ : BEq Src] : List String\n\n  def lenSrc :=\n    log.filterSrc src |&gt;.length\n  #check lenSrc\n  -- Logger.lenSrc {Src : Type} (log : Logger Src) (src : Src) [inst✝ : BEq Src] : Nat\nend Logger\n```\n\nThe following example demonstrates availability of variables in proofs:\n```lean\nvariable\n  {α : Type}    -- available in the proof as indirectly mentioned through `a`\n  [ToString α]  -- available in the proof as `α` is included\n  (a : α)       -- available in the proof as mentioned in the header\n  {β : Type}    -- not available in the proof\n  [ToString β]  -- not available in the proof\n\ntheorem ex : a = a := rfl\n```\nAfter elaboration of the proof, the following warning will be generated to highlight the unused\nhypothesis:\n```\nincluded section variable '[ToString α]' is not used in 'ex', consider excluding it\n```\nIn such cases, the offending variable declaration should be moved down or into a section so that\nonly theorems that do depend on it follow it until the end of the section.\n</code>",
- "11":
+ "29":
+ "<code class=\"docstring\">`by tac` constructs a term of the expected type by running the tactic(s) `tac`. </code>",
+ "28":
+ "<code>LinearMap.BilinForm.toMatrix.{u_1, u_2, u_5} {R₁ : Type u_1} {M₁ : Type u_2} [CommSemiring R₁] [AddCommMonoid M₁]\n  [Module R₁ M₁] {n : Type u_5} [Fintype n] [DecidableEq n] (b : Basis n R₁ M₁) : BilinForm R₁ M₁ ≃ₗ[R₁] Matrix n n R₁</code><span class=\"sep\"></span><code class=\"docstring\">`BilinForm.toMatrix b` is the equivalence between `R`-bilinear forms on `M` and\n`n`-by-`n` matrices with entries in `R`, if `b` is an `R`-basis for `M`. </code>",
+ "27":
+ "<code>BilinForm.toMatrix.{u_1, u_2, u_5} {R₁ : Type u_1} {M₁ : Type u_2} [CommSemiring R₁] [AddCommMonoid M₁] [Module R₁ M₁]\n  {n : Type u_5} [Fintype n] [DecidableEq n] (b : Basis n R₁ M₁) : BilinForm R₁ M₁ ≃ₗ[R₁] Matrix n n R₁</code><span class=\"sep\"></span><code class=\"docstring\">**Alias** of `LinearMap.BilinForm.toMatrix`.\n\n---\n\n`BilinForm.toMatrix b` is the equivalence between `R`-bilinear forms on `M` and\n`n`-by-`n` matrices with entries in `R`, if `b` is an `R`-basis for `M`. </code>",
+ "26": "<code>Basis ι k V₂</code>",
+ "25":
+ "<code>Nonempty.{u} (α : Sort u) : Prop</code><span class=\"sep\"></span><code class=\"docstring\">`Nonempty α` is a typeclass that says that `α` is not an empty type,\nthat is, there exists an element in the type. It differs from `Inhabited α`\nin that `Nonempty α` is a `Prop`, which means that it does not actually carry\nan element of `α`, only a proof that *there exists* such an element.\nGiven `Nonempty α`, you can construct an element of `α` *nonconstructively*\nusing `Classical.choice`.\n</code>",
+ "24":
+ "<code>Module.Basis.{u_1, u_3, u_6} (ι : Type u_1) (R : Type u_3) (M : Type u_6) [Semiring R] [AddCommMonoid M] [Module R M] :\n  Type (max (max u_1 u_3) u_6)</code><span class=\"sep\"></span><code class=\"docstring\">A `Basis ι R M` for a module `M` is the type of `ι`-indexed `R`-bases of `M`.\n\nThe basis vectors are available as `DFunLike.coe (b : Basis ι R M) : ι → M`.\nTo turn a linear independent family of vectors spanning `M` into a basis, use `Basis.mk`.\nThey are internally represented as linear equivs `M ≃ₗ[R] (ι →₀ R)`,\navailable as `Basis.repr`.\n</code>",
+ "23": "<code>Basis ι k V₁</code>",
+ "22":
+ "<code>DecidableEq.{u} (α : Sort u) : Sort (max 1 u)</code><span class=\"sep\"></span><code class=\"docstring\">Propositional equality is `Decidable` for all elements of a type.\n\nIn other words, an instance of `DecidableEq α` is a means of deciding the proposition `a = b` is\nfor all `a b : α`.\n</code>",
+ "21":
+ "<code>Fintype.{u_4} (α : Type u_4) : Type u_4</code><span class=\"sep\"></span><code class=\"docstring\">`Fintype α` means that `α` is finite, i.e. there are only\nfinitely many distinct elements of type `α`. The evidence of this\nis a finset `elems` (a list up to permutation without duplicates),\ntogether with a proof that everything of type `α` is in the list. </code>",
+ "20":
+ "<code>equiv_via_matrices {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂] {ι : Type}\n  [Fintype ι] [DecidableEq ι] (β₁ : BilinForm k V₁) (β₂ : BilinForm k V₂) (b₁ : Basis ι k V₁) :\n  Nonempty (Isometries β₁ β₂) ↔ ∃ b₂, (BilinForm.toMatrix b₁) β₁ = (BilinForm.toMatrix b₂) β₂</code>",
+ "2":
  "<code>LinearMap.BilinForm.{u_1, u_6} (R : Type u_1) [CommSemiring R] (M : Type u_6) [AddCommMonoid M] [Module R M] :\n  Type (max u_1 u_6)</code><span class=\"sep\"></span><code class=\"docstring\">For convenience, a shorthand for the type of bilinear forms from `M` to `R`. </code>",
- "10":
+ "19": "<code><span class=\"literal string\">\"]\"</span> : String</code>",
+ "18": "<code><span class=\"literal string\">\",\"</span> : String</code>",
+ "17": "<code><span class=\"literal string\">\"≃[\"</span> : String</code>",
+ "16": "<code>Lean.TSyntax `term</code>",
+ "15": "<code>V₁ ≃ₗ[k] V₂</code>",
+ "14": "<code>V₁</code>",
+ "13":
+ "<code>Isometries.compat {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂]\n  {β₁ : BilinForm k V₁} {β₂ : BilinForm k V₂} (self : Isometries β₁ β₂) (x y : V₁) :\n  (β₁ x) y = (β₂ (self.equiv x)) (self.equiv y)</code>",
+ "12":
+ "<code>Isometries.equiv {k V₁ V₂ : Type} [Field k] [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂]\n  {β₁ : BilinForm k V₁} {β₂ : BilinForm k V₂} (self : Isometries β₁ β₂) : V₁ ≃ₗ[k] V₂</code>",
+ "11": "<code>BilinForm k V₂</code>",
+ "10": "<code>BilinForm k V₁</code>",
+ "1":
  "<code class=\"docstring\">Makes names from other namespaces visible without writing the namespace prefix.\n\nNames that are made available with `open` are visible within the current `section` or `namespace`\nblock. This makes referring to (type) definitions and theorems easier, but note that it can also\nmake [scoped instances], notations, and attributes from a different namespace available.\n\nThe `open` command can be used in a few different ways:\n\n* `open Some.Namespace.Path1 Some.Namespace.Path2` makes all non-protected names in\n  `Some.Namespace.Path1` and `Some.Namespace.Path2` available without the prefix, so that\n  `Some.Namespace.Path1.x` and `Some.Namespace.Path2.y` can be referred to by writing only `x` and\n  `y`.\n\n* `open Some.Namespace.Path hiding def1 def2` opens all non-protected names in `Some.Namespace.Path`\n  except `def1` and `def2`.\n\n* `open Some.Namespace.Path (def1 def2)` only makes `Some.Namespace.Path.def1` and\n  `Some.Namespace.Path.def2` available without the full prefix, so `Some.Namespace.Path.def3` would\n  be unaffected.\n\n  This works even if `def1` and `def2` are `protected`.\n\n* `open Some.Namespace.Path renaming def1 → def1', def2 → def2'` same as `open Some.Namespace.Path\n  (def1 def2)` but `def1`/`def2`'s names are changed to `def1'`/`def2'`.\n\n  This works even if `def1` and `def2` are `protected`.\n\n* `open scoped Some.Namespace.Path1 Some.Namespace.Path2` **only** opens [scoped instances],\n  notations, and attributes from `Namespace1` and `Namespace2`; it does **not** make any other name\n  available.\n\n* `open &lt;any of the open shapes above&gt; in` makes the names `open`-ed visible only in the next\n  command or expression.\n\n[scoped instance]: https://lean-lang.org/theorem_proving_in_lean4/type_classes.html#scoped-instances\n(Scoped instances in Theorem Proving in Lean)\n\n\n## Examples\n\n```lean\n/-- SKI combinators https://en.wikipedia.org/wiki/SKI_combinator_calculus -/\nnamespace Combinator.Calculus\n  def I (a : α) : α := a\n  def K (a : α) : β → α := fun _ =&gt; a\n  def S (x : α → β → γ) (y : α → β) (z : α) : γ := x z (y z)\nend Combinator.Calculus\n\nsection\n  -- open everything under `Combinator.Calculus`, *i.e.* `I`, `K` and `S`,\n  -- until the section ends\n  open Combinator.Calculus\n\n  theorem SKx_eq_K : S K x = I := rfl\nend\n\n-- open everything under `Combinator.Calculus` only for the next command (the next `theorem`, here)\nopen Combinator.Calculus in\ntheorem SKx_eq_K' : S K x = I := rfl\n\nsection\n  -- open only `S` and `K` under `Combinator.Calculus`\n  open Combinator.Calculus (S K)\n\n  theorem SKxy_eq_y : S K x y = y := rfl\n\n  -- `I` is not in scope, we have to use its full path\n  theorem SKxy_eq_Iy : S K x y = Combinator.Calculus.I y := rfl\nend\n\nsection\n  open Combinator.Calculus\n    renaming\n      I → identity,\n      K → konstant\n\n  #check identity\n  #check konstant\nend\n\nsection\n  open Combinator.Calculus\n    hiding S\n\n  #check I\n  #check K\nend\n\nsection\n  namespace Demo\n    inductive MyType\n    | val\n\n    namespace N1\n      scoped infix:68 \" ≋ \" =&gt; BEq.beq\n\n      scoped instance : BEq MyType where\n        beq _ _ := true\n\n      def Alias := MyType\n    end N1\n  end Demo\n\n  -- bring `≋` and the instance in scope, but not `Alias`\n  open scoped Demo.N1\n\n  #check Demo.MyType.val == Demo.MyType.val\n  #check Demo.MyType.val ≋ Demo.MyType.val\n  -- #check Alias -- unknown identifier 'Alias'\nend\n```\n</code>",
- "1": "<code>Expr : Type</code>",
  "0":
- "<code class=\"docstring\">In Lean, every concrete type other than the universes\nand every type constructor other than dependent arrows\nis an instance of a general family of type constructions known as inductive types.\nIt is remarkable that it is possible to construct a substantial edifice of mathematics\nbased on nothing more than the type universes, dependent arrow types, and inductive types;\neverything else follows from those.\nIntuitively, an inductive type is built up from a specified list of constructors.\nFor example, `List α` is the list of elements of type `α`, and is defined as follows:\n```\ninductive List (α : Type u) where\n| nil\n| cons (head : α) (tail : List α)\n```\nA list of elements of type `α` is either the empty list, `nil`,\nor an element `head : α` followed by a list `tail : List α`.\nSee [Inductive types](https://lean-lang.org/theorem_proving_in_lean4/inductive_types.html)\nfor more information.\n</code>"}
+ "<code class=\"docstring\">A `section`/`end` pair delimits the scope of `variable`, `include`, `open`, `set_option`, and `local`\ncommands. Sections can be nested. `section &lt;id&gt;` provides a label to the section that has to appear\nwith the matching `end`. In either case, the `end` can be omitted, in which case the section is\nclosed at the end of the file.\n</code>"}
