@@ -1,5 +1,4 @@
 import VersoBlog
-
 import Mathlib.Algebra.Module.Defs
 import Mathlib.Algebra.Module.LinearMap.Basic
 import Mathlib.LinearAlgebra.BilinearMap
@@ -11,6 +10,7 @@ import Mathlib.FieldTheory.RatFunc.Basic
 import Mathlib.LinearAlgebra.TensorProduct.Basic
 
 
+set_option linter.unusedVariables false
 open Verso Genre Blog
 
 
@@ -31,11 +31,11 @@ in the [repo](https://github.com/gmcninch-tufts/VERSEIM-2025)).
 We spent much of the time formalizing statements in *linear algebra*,
 for example in the following setting:
 
-```leanInit second
+```leanInit reu
 ```
 
 
-```lean second 
+```lean reu 
 noncomputable section     
 
 open Module
@@ -78,7 +78,7 @@ notation:100 lhs:100 "≃[" field:100 "," lhb:100 ","
   
 Here is the formal statement:
 
-```lean second
+```lean reu
 theorem equiv_via_matrices {ι:Type} [Fintype ι] [DecidableEq ι]
     (β₁ : BilinForm k V₁)   (β₂ : BilinForm k V₂) 
     (b₁ : Basis ι k V₁) :
@@ -92,7 +92,7 @@ theorem equiv_via_matrices {ι:Type} [Fintype ι] [DecidableEq ι]
   same dimension are equivalent.
 
 
-```lean second
+```lean reu
 def alternate_iso 
     {β₁: BilinForm k V₁} {β₂: BilinForm k V₂} 
     (balt₁: IsAlt β₁) (balt₂: IsAlt β₂)
@@ -112,7 +112,7 @@ def alternate_iso
 Any reflexive form is either alternating -- i.e. $`β(x,x) = 0` for
 every $`x` -- or symmetric  -- i.e. $`β(x,y) = β(y,x)` for all $`x,y`.
 
-```lean second
+```lean reu
 theorem refl_is_alt_or_symm {β: BilinForm k V} (h: β.IsRefl) 
     [FiniteDimensional k V] :
   β.IsAlt ∨ β.IsSymm := by sorry
@@ -128,7 +128,7 @@ theorem refl_is_alt_or_symm {β: BilinForm k V} (h: β.IsRefl)
 (see \[Elman, Karpenko & Merkurjev, "The algebraic and
 geometric theory of quadratic forms", Theorem 17.3\]).
 
-```lean second
+```lean reu
 open Polynomial -- so we can write k[X] for `Polynomial k`
 
 theorem cassels_pfister (φ : QuadraticForm k V) [Invertible (2 : k)]
