@@ -1,11 +1,27 @@
 import VersoBlog
-import Blog
+import ProofSketches
+import ProofSketches.MyTheme
 
-open Verso Genre Blog Site Syntax
+import ProofSketches.Posts.FirstPost
+import ProofSketches.Posts.SecondPost
 
-def blog : Site := site Blog.FrontPage /
-  "about" Blog.About
-  "blog" Blog.Posts with
-    Blog.Posts.FirstPost
+open Verso Genre Blog Site Syntax 
 
-def main := blogMain .default blog
+def linkTargets : Code.LinkTargets TraverseContext where
+  const n _      := #[ { shortDescription := "doc"
+                       , description := s!"Documentation for {n}"
+                       , href := s!"http://site.example/constlink/{n}"
+                       }
+                     ]
+  definition d _ := #[ { shortDescription := "def"
+                       , description := "Definition"
+                       , href := s!"http://site.example/deflink/{d}"
+                       }
+                     ]
+
+def myblog : Site := site ProofSketches.Posts with
+    ProofSketches.Posts.FirstPost
+    ProofSketches.Posts.SecondPost
+
+def main := blogMain theme myblog (linkTargets := linkTargets) (options := ["--output", "docs"])
+
