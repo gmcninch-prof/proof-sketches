@@ -4,24 +4,38 @@ import ProofSketches.MyTheme
 
 import ProofSketches.Posts.FirstPost
 import ProofSketches.Posts.SecondPost
+import ProofSketches.Posts.REU
 
 open Verso Genre Blog Site Syntax 
 
 def linkTargets : Code.LinkTargets TraverseContext where
-  const n _      := #[ { shortDescription := "doc"
-                       , description := s!"Documentation for {n}"
-                       , href := s!"http://site.example/constlink/{n}"
-                       }
-                     ]
-  definition d _ := #[ { shortDescription := "def"
-                       , description := "Definition"
-                       , href := s!"http://site.example/deflink/{d}"
-                       }
-                     ]
+  const n _      := #[{ shortDescription := "doc"
+                       , description := s!"Mathlib docs for {n}"
+                       , href := s!"https://leanprover-community.github.io/mathlib4_docs/find/?pattern={n}"
+                       }]
+  definition d _ := #[{ shortDescription := "def"
+                       , description := s!"Mathlib docs for {d}"
+                       , href := s!"https://leanprover-community.github.io/mathlib4_docs/find/?pattern={d}"
+                       }]
 
-def myblog : Site := site ProofSketches.Posts with
+-- def linkTargets : Code.LinkTargets TraverseContext where
+--   const n _      := #[ { shortDescription := "doc"
+--                        , description := s!"Documentation for {n}"
+--                        , href := s!"http://site.example/constlink/{n}"
+--                        }
+--                      ]
+--   definition d _ := #[ { shortDescription := "def"
+--                        , description := "Definition"
+--                        , href := s!"http://site.example/deflink/{d}"
+--                        }
+--                      ]
+
+def myblog : Site := site ProofSketches.FrontPage /
+  static "assets" ← "assets"
+  "posts" ProofSketches.Posts with
     ProofSketches.Posts.FirstPost
     ProofSketches.Posts.SecondPost
+    ProofSketches.Posts.REU
 
 def main := blogMain theme myblog (linkTargets := linkTargets) (options := ["--output", "docs"])
 

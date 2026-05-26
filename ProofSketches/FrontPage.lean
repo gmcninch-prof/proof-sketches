@@ -1,6 +1,6 @@
 import VersoBlog
 open Verso Genre Blog
 
-#doc (Page) "My Blog" =>
+#doc (Page) "Proof Sketches" =>
 
-Welcome to my blog!
+Formalization of mathematics.

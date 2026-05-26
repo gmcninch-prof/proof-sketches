@@ -1,0 +1,143 @@
+import VersoBlog
+
+import Mathlib.Algebra.Module.Defs
+import Mathlib.Algebra.Module.LinearMap.Basic
+import Mathlib.LinearAlgebra.BilinearMap
+import Mathlib.LinearAlgebra.Basis.Basic
+import Mathlib.LinearAlgebra.Matrix.BilinearForm
+import Mathlib.LinearAlgebra.QuadraticForm.Basic
+import Mathlib.LinearAlgebra.QuadraticForm.TensorProduct
+import Mathlib.FieldTheory.RatFunc.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Basic
+
+
+open Verso Genre Blog
+
+
+#doc (Post) "Summer 2025 REU on Formalization" =>
+
+%%%
+authors := ["George McNinch"]
+date    := {year := 2025, month := 7, day := 31}
+%%%
+
+This post supplements the [post here](https://gmcninch.math.tufts.edu/posts/2025-07--formalization-REU.html)
+
+Here I'm going to give examples of results formalized by the students
+during the summer program; (the actual proof(s) are elided here --
+that is what the statement `sorry` is all about -- but can be found
+in the [repo](https://github.com/gmcninch-tufts/VERSEIM-2025)).
+
+We spent much of the time formalizing statements in *linear algebra*,
+for example in the following setting:
+
+```leanInit second
+```
+
+
+```lean second 
+noncomputable section     
+
+open Module
+open LinearMap
+open LinearMap (BilinForm)
+
+--  V, V₁ and V₂ are vector spaces over the field k 
+variable  {k V V₁ V₂ :Type} [Field k] 
+  [AddCommGroup V] [Module k V]
+  [AddCommGroup V₁] [Module k V₁]
+  [AddCommGroup V₂] [Module k V₂]
+
+-- an isometry between (V₁,β₁) and (V₂,β₂) is a linear equivalence
+-- V₁ ≃ₗ[k] V₂ together with a proof that this equivalence is compatible 
+-- with the given bilinear forms
+
+structure Isometries
+  (β₁:BilinForm k V₁) 
+  (β₂:BilinForm k V₂)
+  where
+    -- the linear equivalence
+    equiv : V₁ ≃ₗ[k] V₂     
+    -- the compatibility assertion    
+    compat : ∀ (x y : V₁), β₁ x y = β₂ (equiv x) (equiv y) 
+
+-- Notation so that `V₁ ≃[k,β₁,β₂] V₂` denotes `Isometries β₁ β₂` 
+notation:100 lhs:100 "≃[" field:100 "," lhb:100 "," 
+  rhb:100 "]" rhs:100 => 
+  Isometries (k:= field) (V₁ := lhs) (V₂ := rhs) lhb rhb
+```
+
+# *isometries via bases*
+
+> If $`(V_1,\beta_1)` and $`(V_2,\beta_2)` are pairs consisting of a
+  finite dimensional vector space together with a bilinear form, then
+  there is an isometry between $`V_1` and $`V_2` if and only if there
+  are bases $`b_1` of $`V_1` and $`b_2` of $`V_2` such that the matrix of
+  $`\beta_1` with respect to $`b_1` is the same as the matrix of
+  $`\beta_2` with respect to $`b_2`.
+  
+Here is the formal statement:
+
+```lean second
+theorem equiv_via_matrices {ι:Type} [Fintype ι] [DecidableEq ι]
+    (β₁ : BilinForm k V₁)   (β₂ : BilinForm k V₂) 
+    (b₁ : Basis ι k V₁) :
+  Nonempty (V₁ ≃[k,β₁,β₂] V₂)  ↔  ∃ b₂:Basis ι k V₂,
+  (BilinForm.toMatrix b₁ β₁) =  (BilinForm.toMatrix b₂ β₂) := by sorry
+```
+
+# *characterization of non-degenerate alternating forms*
+
+> Any two non-degenerate alternating bilinear forms on spaces of the
+  same dimension are equivalent.
+
+
+```lean second
+def alternate_iso 
+    {β₁: BilinForm k V₁} {β₂: BilinForm k V₂} 
+    (balt₁: IsAlt β₁) (balt₂: IsAlt β₂)
+    (hd₁: β₁.Nondegenerate) (hd₂: β₂.Nondegenerate) 
+    [FiniteDimensional k V₁] [FiniteDimensional k V₂]
+    (h: Module.finrank k V₁ = Module.finrank k V₂) : 
+       V₁ ≃[k,β₁,β₂] V₂ := by 
+    sorry
+  
+```
+
+# *characterization of reflexive forms*
+   
+> A bilinear form $β$ is *reflexive* if $`β(x,y) = 0 \Rightarrow
+  β(y,x) = 0` for every $`x,y \in V`.
+   
+Any reflexive form is either alternating -- i.e. $`β(x,x) = 0` for
+every $`x` -- or symmetric  -- i.e. $`β(x,y) = β(y,x)` for all $`x,y`.
+
+```lean second
+theorem refl_is_alt_or_symm {β: BilinForm k V} (h: β.IsRefl) 
+    [FiniteDimensional k V] :
+  β.IsAlt ∨ β.IsSymm := by sorry
+```
+
+# *Cassels-Pfister Theorem*
+  
+> Let φ be a quadratic form on the vector space $`V` and let $`f
+  \in k[X]`. If there is a vector $`v \in V \otimes_k k(X)` such that
+  $`\phi(v) = f` then there is a vector $`w \in V \otimes_k k[X]` such that
+  $`\phi(w) = f`.
+
+(see \[Elman, Karpenko & Merkurjev, "The algebraic and
+geometric theory of quadratic forms", Theorem 17.3\]).
+
+```lean second
+open Polynomial -- so we can write k[X] for `Polynomial k`
+
+theorem cassels_pfister (φ : QuadraticForm k V) [Invertible (2 : k)]
+    (f : k[X]) (v : TensorProduct k (RatFunc k) V)          
+    (h : φ.baseChange (RatFunc k) v = f) :
+  ∃ (w : TensorProduct k k[X] V), φ.baseChange k[X] w = f := by sorry
+  
+```
+  
+A formalized proof can be found in [the repository,
+here](https://github.com/gmcninch-tufts/VERSEIM-2025/tree/main/VERSEIM2025/Forms/RationalFunctionFields).
+

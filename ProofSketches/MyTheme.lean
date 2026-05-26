@@ -83,7 +83,8 @@ def primary : Template := do
             <div class="inner-wrap">
               <nav class="top" role="navigation">
                 <ol>
-                  <li class="home"><a href="."> {{fontAwesome "fas fa-diagram-project"}} {{"Proof Sketches"}} </a></li>
+                  <li class="home"><a href="."> {{fontAwesome "fas fa-diagram-project"}} {{"Proof Sketches"}} </a></li>                
+                  <li class="home"><a href="./posts"> {{fontAwesome "fas fa-diagram-project"}} {{"Posts"}} </a></li>
                   <li>{{fontAwesome "fa-solid fa-chalkboard-teacher"}} <a href="https://gmcninch.math.tufts.edu"> {{"George McNinch"}} </a></li>
                 </ol>
               </nav>            

@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" href="data:,">
+    <title>Summer 2025 REU on Formalization</title><base href="../.././"><style>:root {
+    /** Typography **/
+    /* The font family used for headers, ToC entries, etc */
+    --verso-structure-font-family: "Helvetica Neue", "Segoe UI", "Roboto", Arial, sans-serif;
+    /* The font family used for body text */
+    --verso-text-font-family: "Helvetica Neue", "Segoe UI", "Roboto", Arial, sans-serif;
+    /* The font family used for code */
+    --verso-code-font-family: monospace;
+
+    /** Text colors **/
+    --verso-text-color: black;
+    --verso-code-color: black;
+    --verso-structure-color: black;
+
+    /** Selected items (e.g. search results) */
+    --verso-selected-color: #def;
+
+    /** Message colors **/
+    /*
+    These colors are used to render Lean's feedback. They come in three severities and two
+    variants. The raw color itself is used for the text of a message of the indicated severity,
+    while the presence of such a message is indicated using the indicator color (e.g. via a
+    wavy underline or a bar in the margin).
+    */
+    --verso-info-color: black;
+    --verso-info-indicator-color: #4777ff;
+    --verso-warning-color: black;
+    --verso-warning-indicator-color: #e7a71d; /* 2.11 contrast ratio for white, 9.94 for black */
+    --verso-error-color: #cc0000;
+    --verso-error-indicator-color: #ff0000;
+
+    /** Code Highlighting **/
+    /*
+    These variables control the rendering of Lean code emitted by Verso. Each category that can be
+    highlighted supports the customization of color, weight, style, and family.
+    */
+    /* Constants (e.g. `List` or `id` or `none`) */
+    --verso-code-const-color: var(--verso-code-color);
+    --verso-code-const-weight: normal;
+    --verso-code-const-style: normal;
+    --verso-code-const-font-family: var(--verso-code-font-family);
+
+    /* Keywords/atoms (e.g. `for` or `def` or `induction`) */
+    --verso-code-keyword-color: var(--verso-code-color);
+    --verso-code-keyword-weight: bold;
+    --verso-code-keyword-style: normal;
+    --verso-code-keyword-font-family: var(--verso-code-font-family);
+
+    /* Local bindings (e.g. `x` in `let x := 5`) */
+    --verso-code-var-color: var(--verso-code-color);
+    --verso-code-var-weight: normal;
+    --verso-code-var-style: italic;
+    --verso-code-kw-font-family: var(--verso-code-font-family);
+}
+</style><style>
+
+
+.hl.lean {
+  white-space: pre;
+  font-weight: normal;
+  font-style: normal;
+  font-size: inherit;
+}
+
+.hl.lean .keyword {
+  color: var(--verso-code-keyword-color,);
+  font-weight: var(--verso-code-keyword-weight, bold);
+  font-style: var(--verso-code-keyword-style, normal);
+  font-family: var(--verso-code-keyword-font-family,);
+}
+
+.hl.lean .const {
+  color: var(--verso-code-const-color,);
+  font-weight: var(--verso-code-const-weight, normal);
+  font-style: var(--verso-code-const-style, normal);
+  font-family: var(--verso-code-const-font-family,);
+}
+
+.hl.lean .var {
+  color: var(--verso-code-var-color,);
+  font-weight: var(--verso-code-var-weight, normal);
+  font-style: var(--verso-code-var-style, italic);
+  font-family: var(--verso-code-var-font-family,);
+
+  position: relative;
+}
+
+.hl.lean .literal, .hl.lean .unknown {
+  color: var(--verso-code-color,);
+  font-weight: normal;
+  font-style: normal;
+  font-family: var(--verso-code-font-family,);
+}
+
+.hover-container {
+  width: 0;
+  height: 0;
+  position: relative;
+  display: inline;
+}
+
+.hl.lean a {
+  color: inherit;
+  text-decoration: currentcolor underline dotted;
+}
+
+.hl.lean a:hover {
+  text-decoration: currentcolor underline solid;
+}
+
+.hl.lean .hover-info {
+  white-space: normal;
+}
+
+.hl.lean .token .hover-info {
+  display: none;
+  position: absolute;
+  background-color: #e5e5e5;
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 300;
+}
+
+.hl.lean .hover-info.messages {
+  max-height: 10rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 0 0.5rem 0 0;
+  display: block;
+}
+
+.hl.lean .hover-info code {
+  white-space: pre-wrap;
+  background: none;
+  color: black;
+}
+
+.hl.lean .hover-info.messages > code {
+  padding: 0.5rem;
+  display: block;
+  width: fit-content;
+}
+
+.hl.lean .hover-info.messages > code:only-child {
+  margin: 0;
+}
+
+.hl.lean .hover-info.messages > code {
+  margin: 0.1rem;
+}
+
+.hl.lean .hover-info.messages > code:not(:first-child) {
+  margin-top: 0rem;
+}
+
+.hl.lean {
+}
+
+.hl.lean.block {
+  display: block;
+}
+
+.hl.lean.inline {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+.hl.lean * {
+}
+
+.hl.lean .token {
+  transition: all 0.25s; /* Slight fade for highlights */
+}
+
+@media (hover: hover) {
+  .hl.lean .token.binding-hl, .hl.lean .literal.string:hover, .hl.lean .token.typed:hover {
+    background-color: #eee;
+    border-radius: 2px;
+    transition: none;
+  }
+}
+
+
+.hl.lean .has-info .token:not(.tactic-state):not(.tactic-state *), .hl.lean .has-info .inter-text:not(.tactic-state):not(.tactic-state *) {
+  text-decoration-style: wavy;
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.hl.lean .has-info .hover-info {
+  display: none;
+  position: absolute;
+  transform: translate(0.25rem, 0.3rem);
+  border: 1px solid black;
+  padding: 0.5rem;
+  z-index: 400;
+  text-align: left;
+}
+
+.hl.lean .has-info.error :not(.tactic-state):not(.tactic-state *){
+  text-decoration-color: red;
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.error:hover {
+    background-color: #ffb3b3;
+  }
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #ffb3b3;
+}
+
+.tippy-box[data-theme~='error'] .hl.lean .hover-info.messages > code.error {
+  background: none;
+  border: none;
+}
+
+.error .verso-message, .error .verso-message .token, .error .verso-message label {
+  color: var(--verso-error-color);
+}
+
+.error .verso-message .case-label:has(input[type="checkbox"])::before {
+  background-color: var(--verso-error-color) !important;
+}
+
+.hl.lean .has-info.warning :not(.tactic-state):not(.tactic-state *) {
+  text-decoration-color: var(--verso-warning-indicator-color);
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.warning:hover {
+    background-color:var(--verso-warning-color);
+  }
+}
+
+.hl.lean .hover-info.messages > code.warning {
+  background-color: var(--verso-warning-color);
+}
+
+.lean-output {
+  border-left: 0.2em solid transparent;
+  padding: 0 0 0 0.5em;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.lean-output.error {
+  border-color: var(--verso-error-indicator-color);
+}
+
+.lean-output.information {
+  border-color: var(--verso-info-indicator-color);
+}
+
+.lean-output.warning {
+  border-color: var(--verso-warning-indicator-color);
+}
+
+.hl.lean .hover-info.messages > code.error {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid var(--verso-warning-color);
+}
+
+.tippy-box[data-theme~='warning'] .hl.lean .hover-info.messages > code.warning {
+  background: none;
+  border: none;
+}
+
+
+.hl.lean .has-info.information :not(.tactic-state):not(.tactic-state *) {
+  text-decoration-color: var(--verso-info-indicator-color, blue);
+}
+
+@media (hover: hover) {
+  .hl.lean .has-info.information:hover {
+    background-color: #4777ff;
+  }
+}
+
+
+.hl.lean .hover-info.messages > code.information {
+  background-color: #e5e5e5;
+  border-left: 0.2rem solid #4777ff;
+}
+
+.tippy-box[data-theme~='info'] .hl.lean .hover-info.messages > code.information {
+  background: none;
+  border: none;
+}
+
+.hl.lean div.docstring {
+  font-family: var(--verso-text-font-family, sans-serif);
+  white-space: normal;
+  max-width: calc(min(40rem, 90vw));
+  width: max-content;
+}
+
+.hl.lean div.docstring > :last-child {
+  margin-bottom: 0;
+}
+
+.hl.lean div.docstring > :first-child {
+  margin-top: 0;
+}
+
+.hl.lean .hover-info .sep {
+  display: block;
+  width: auto;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  height: 1px;
+  border-top: 1px solid #ccc;
+}
+
+.hl.lean code {
+  font-family: var(--verso-code-font-family);
+}
+
+.hl.lean .tactic-state {
+  display: none;
+  position: relative;
+  width: fit-content;
+  border: 1px solid #888888;
+  border-radius: 0.1rem;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+
+.hl.lean.popup .tactic-state {
+  position: static;
+  display: block;
+  width: auto;
+  border: none;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+
+
+.hl.lean .tactic {
+  position: relative;
+  display: inline;
+  vertical-align: top;
+  /* Without these, mobile Safari will start making font sizes inconsistent when its text size adjustment feature is triggered.*/
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.hl.lean .tactic:has(.tactic-toggle:checked) {
+  display: inline-grid;
+  grid-template-columns: 1fr;
+}
+
+.hl.lean .tactic-toggle:checked ~ .tactic-state {
+  display: inline-block;
+  vertical-align: top;
+  grid-row: 2;
+  justify-self: start;
+}
+
+.hl.lean .tactic > label {
+  position: relative;
+  grid-row: 1;
+  display: inline;
+}
+
+@media (hover: hover) {
+  .hl.lean .tactic:has(.tactic-toggle:not(:checked)) > label:hover {
+    background-color: #eeeeee;
+  }
+}
+
+.hl.lean .tactic-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .tactic > label::after {
+  content: "";
+  border: 1px solid #bbbbbb;
+  /* These need to be em, not rem, to scale with the font */
+  border-radius: 1em;
+  height: 0.25em;
+  vertical-align: middle;
+  width: 0.6em;
+  margin-left: 0.1em;
+  margin-right: 0.1em;
+  display: inline-block;
+  transition: all 0.5s;
+}
+
+/*
+@media (hover: hover) {
+  .hl.lean .tactic > label:hover::after {
+    border: 1px solid #aaaaaa;
+    background-color: #aaaaaa;
+    transition: all 0.5s;
+  }
+}
+*/
+
+.hl.lean .tactic > label:has(+ .tactic-toggle:checked)::after {
+  border: 1px solid #999999;
+  background-color: #999999;
+  transition: all 0.5s;
+}
+
+.hl.lean .tactic-state .goal + .goal {
+  margin-top: 1.5em;
+}
+
+/*
+Some CSS frameworks customize details/summary in ways not compatible with Verso's output.
+*/
+
+.hl.lean details {
+  display: block !important;
+  margin: 0;
+}
+
+.hl.lean details summary {
+  display: list-item !important;
+  margin: 0;
+}
+
+.hl.lean details summary:focus {
+  outline: none;
+  outline-offset: none;
+  color: inherit;
+}
+
+.hl.lean ul > li {
+  margin-bottom: 0;
+}
+
+.hl.lean details summary::marker {
+  display: inline !important;
+}
+
+.hl.lean details > summary:first-of-type {
+  list-style-type: disclosure-closed;
+  list-style-position: inside;
+}
+
+.hl.lean details[open] > summary:first-of-type {
+  list-style-type: disclosure-open;
+}
+
+.hl.lean details summary::before, .hl.lean details summary::after {
+  content: "" !important;
+  background: none;
+  display: none;
+}
+
+.hl.lean .tactic-state summary {
+  /* These need to be em, not rem, to scale with the font */
+  margin-left: -0.5em;
+}
+
+.hl.lean .tactic-state details {
+  /* These need to be em, not rem, to scale with the font */
+  padding-left: 0.5em;
+}
+
+.hl.lean .case-label {
+  display: block;
+  position: relative;
+}
+
+.hl.lean .case-label input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  z-index: -10;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"])::before {
+  display: inline-block;
+  background-color: black;
+  content: ' ';
+  transition: ease 0.2s;
+  margin-right: 0.7em;
+  clip-path: polygon(100% 0, 0 0, 50% 100%);
+  width: 0.6em;
+  height: 0.6em;
+  vertical-align: middle;
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:not(:checked))::before {
+  transform: rotate(-90deg);
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]) {
+
+}
+
+.hl.lean .case-label:has(input[type="checkbox"]:checked) {
+
+}
+
+
+.hl.lean .labeled-case > :not(:first-child) {
+  max-height: 0px;
+  display: block;
+  overflow: hidden;
+  transition: max-height 0.1s ease-in;
+  /* These need to be em, not rem, to scale with the font */
+  margin-left: 0.5em;
+  margin-top: 0.1em;
+}
+
+.hl.lean .labeled-case:has(.case-label input[type="checkbox"]:checked) > :not(:first-child) {
+  max-height: 100%;
+}
+
+
+.hl.lean .goal-name::before {
+  font-style: normal;
+  content: "case ";
+}
+
+.hl.lean .goal-name {
+  font-style: italic;
+  font-family: var(--verso-code-font-family);
+  color: inherit;
+}
+
+.hl.lean .hypotheses {
+  display: table;
+}
+
+.hl.lean .hypothesis {
+  display: table-row;
+}
+
+.hl.lean .hypothesis > * {
+  display: table-cell;
+}
+
+
+.hl.lean .hypotheses .colon {
+  text-align: center;
+  /* This needs to be em, not rem, to scale with the font */
+  min-width: 1em;
+}
+
+.hl.lean .hypotheses .name {
+  text-align: right;
+}
+
+.hl.lean .hypotheses .name,
+.hl.lean .hypotheses .type,
+.hl.lean .conclusion .type {
+  font-family: var(--verso-code-font-family);
+}
+
+.tippy-box {
+  /* Without these, mobile Safari will start making font sizes inconsistent when its text size adjustment feature is triggered.*/
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.tippy-box[data-theme~='lean'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='lean'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+}
+.tippy-box[data-theme~='lean'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #e5e5e5;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='top'] > .tippy-arrow::after {
+  bottom: -11px;
+  border-width: 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='bottom'] > .tippy-arrow::after {
+  top: -11px;
+  border-width: 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #e5e5e5;
+  border-width: 11px 0 11px 11px;
+}
+.tippy-box[data-theme~='message'][data-placement^='left'] > .tippy-arrow::after {
+  right: -11px;
+  border-width: 11px 0 11px 11px;
+}
+
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #e5e5e5;
+  border-width: 11px 11px 11px 0;
+}
+.tippy-box[data-theme~='message'][data-placement^='right'] > .tippy-arrow::after {
+  left: -11px;
+  border-width: 11px 11px 11px 0;
+}
+
+
+
+.tippy-box[data-theme~='warning'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid var(--verso-warning-color);
+}
+
+.tippy-box[data-theme~='error'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #f7a7af;
+}
+
+.tippy-box[data-theme~='info'] {
+  background-color: #e5e5e5;
+  color: black;
+  border: 3px solid #99b3c2;
+}
+
+.tippy-box[data-theme~='tactic'] {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: white;
+}
+.tippy-box[data-theme~='tactic'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: white;
+}
+
+.extra-doc-links {
+  list-style-type: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.extra-doc-links > li {
+  display: inline-block;
+}
+
+.extra-doc-links > li:not(:last-child)::after {
+  content: '|';
+  display: inline-block;
+  margin: 0 0.25em;
+}
+
+.verso-message .trace {
+  display: block;
+}
+
+.verso-message .trace > summary::marker {
+  color: var(--verso-text-color);
+}
+
+.verso-message .trace-children {
+  margin: 0;
+  padding: 0;
+}
+
+.verso-message .trace-children > li {
+  list-style-type: none;
+  margin-left: 1.5em;
+}
+
+.verso-message .trace-children > li:not(:has(.trace)) {
+  margin-left: 0;
+}
+
+.verso-message .trace-class {
+  color: color-mix(in srgb, currentColor 70%, transparent);
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+.verso-message .text {
+  white-space: pre-wrap;
+}
+
+
+</style>
+<script>
+      
+
+window.onload = () => {
+
+    // Don't show hovers inside of closed tactic states
+    function blockedByTactic(elem) {
+      let parent = elem.parentNode;
+      while (parent && "classList" in parent) {
+        if (parent.classList.contains("tactic")) {
+          const toggle = parent.querySelector("input.tactic-toggle");
+          if (toggle) {
+            return !toggle.checked;
+          }
+        }
+        parent = parent.parentNode;
+      }
+      return false;
+    }
+
+    // Track whether any tippy is visible (O(1) check instead of DOM scan)
+    let visibleTippyCount = 0;
+    function blockedByTippy(elem) {
+      return visibleTippyCount > 0;
+    }
+
+    // Binding highlights via event delegation with cached lookups
+    const bindingCache = new Map(); // context+binding -> [token elements]
+    let highlightedTokens = [];
+    function getBindingTokens(context, binding) {
+      const key = context + "\0" + binding;
+      let tokens = bindingCache.get(key);
+      if (!tokens) {
+        tokens = [];
+        for (const example of document.querySelectorAll(".hl.lean")) {
+          if (example.dataset.leanContext == context) {
+            for (const tok of example.querySelectorAll(".token[data-binding=\"" + CSS.escape(binding) + "\"]")) {
+              tokens.push(tok);
+            }
+          }
+        }
+        bindingCache.set(key, tokens);
+      }
+      return tokens;
+    }
+    for (const container of document.querySelectorAll(".hl.lean")) {
+      container.addEventListener("mouseover", (event) => {
+        const c = event.target.closest(".token");
+        if (!c || !c.dataset.binding || c.dataset.binding === "" || !container.contains(c)) return;
+        if (blockedByTactic(c)) return;
+        const tokens = getBindingTokens(container.dataset.leanContext, c.dataset.binding);
+        for (const tok of tokens) {
+          tok.classList.add("binding-hl");
+        }
+        highlightedTokens = tokens;
+      });
+      container.addEventListener("mouseout", (event) => {
+        const c = event.target.closest(".token");
+        if (!c || !container.contains(c)) return;
+        for (const tok of highlightedTokens) {
+          tok.classList.remove("binding-hl");
+        }
+        highlightedTokens = [];
+      });
+    }
+    /* Render docstrings */
+    if ('undefined' !== typeof marked) {
+        for (const d of document.querySelectorAll("code.docstring, pre.docstring")) {
+            const str = d.innerText;
+            const html = marked.parse(str);
+            const rendered = document.createElement("div");
+            rendered.classList.add("docstring");
+            rendered.innerHTML = html;
+            d.parentNode.replaceChild(rendered, d);
+        }
+    }
+    // Add hovers
+    let docsJson = "-verso-docs.json";
+    fetch(docsJson).then((resp) => resp.json()).then((versoDocData) => {
+
+      function hideParentTooltips(element) {
+        let parent = element.parentElement;
+        while (parent) {
+          const tippyInstance = parent._tippy;
+          if (tippyInstance) {
+            tippyInstance.hide();
+          }
+          parent = parent.parentElement;
+        }
+      }
+
+
+
+      const defaultTippyProps = {
+        /* DEBUG -- remove the space: * /
+        onHide(any) { return false; },
+        trigger: "click",
+        // */
+        /* theme: "lean", */
+        maxWidth: "none",
+        appendTo: () => document.body,
+        interactive: true,
+        delay: [100, null],
+        /* ignoreAttributes: true, */
+        followCursor: 'initial',
+        onShow(inst) {
+          if (inst.reference.className == 'tactic') {
+            const toggle = inst.reference.querySelector("input.tactic-toggle");
+            if (toggle && toggle.checked) {
+              return false;
+            }
+            hideParentTooltips(inst.reference);
+            if (blockedByTippy(inst.reference)) { return false; }
+
+          } else if (inst.reference.querySelector(".hover-info") || "versoHover" in inst.reference.dataset) {
+            if (blockedByTactic(inst.reference)) { return false };
+            if (blockedByTippy(inst.reference)) { return false; }
+          } else { // Nothing to show here!
+            return false;
+          }
+        },
+        onShown(inst) { visibleTippyCount++; },
+        onHidden(inst) { visibleTippyCount = Math.max(0, visibleTippyCount - 1); },
+        content (tgt) {
+          const content = document.createElement("span");
+          if (tgt.className == 'tactic') {
+            const state = tgt.querySelector(".tactic-state").cloneNode(true);
+            state.style.display = "block";
+            content.appendChild(state);
+            content.style.display = "block";
+            content.className = "hl lean popup";
+          } else {
+            content.className = "hl lean";
+            content.style.display = "block";
+            content.style.maxHeight = "300px";
+            content.style.overflowY = "auto";
+            content.style.overflowX = "hidden";
+            const hoverId = tgt.dataset.versoHover;
+            const hoverInfo = tgt.querySelector(".hover-info");
+            if (hoverId) { // Docstrings from the table
+              // TODO stop doing an implicit conversion from string to number here
+              let data = versoDocData[hoverId];
+              if (data) {
+                const info = document.createElement("span");
+                info.className = "hover-info";
+                info.style.display = "block";
+                info.innerHTML = data;
+                content.appendChild(info);
+                /* Render docstrings - TODO server-side */
+                if ('undefined' !== typeof marked) {
+                    for (const d of content.querySelectorAll("code.docstring, pre.docstring")) {
+                        const str = d.innerText;
+                        const html = marked.parse(str);
+                        const rendered = document.createElement("div");
+                        rendered.classList.add("docstring");
+                        rendered.innerHTML = html;
+                        d.parentNode.replaceChild(rendered, d);
+                    }
+                }
+              } else {
+                content.innerHTML = "Failed to load doc ID: " + hoverId;
+              }
+            } else if (hoverInfo) { // The inline info, still used for compiler messages
+              content.appendChild(hoverInfo.cloneNode(true));
+            }
+            const extraLinks = tgt.parentElement.dataset['versoLinks'];
+            if (extraLinks) {
+              try {
+                const extras = JSON.parse(extraLinks);
+                const links = document.createElement('ul');
+                links.className = 'extra-doc-links';
+                extras.forEach((l) => {
+                  const li = document.createElement('li');
+                  li.innerHTML = "<a href=\"" + l['href'] + "\" title=\"" + l.long + "\">" + l.short + "</a>";
+                  links.appendChild(li);
+                });
+                content.appendChild(links);
+              } catch (error) {
+                console.error(error);
+              }
+            }
+          }
+          return content;
+        }
+      };
+
+
+      document.querySelectorAll('.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token, .hl.lean .level-var, .hl.lean .level-const, .hl.lean .level-op, .hl.lean .sort').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'lean');
+      });
+      document.querySelectorAll('.hl.lean .has-info.warning').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'warning message');
+      });
+      document.querySelectorAll('.hl.lean .has-info.information').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'info message');
+      });
+      document.querySelectorAll('.hl.lean .has-info.error').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'error message');
+      });
+      document.querySelectorAll('.hl.lean .tactic').forEach(element => {
+        element.setAttribute('data-tippy-theme', 'tactic');
+      });
+      // Skip tokens inside closed tactics — they interfere with tactic tippys
+      const closedTactics = new Set();
+      document.querySelectorAll('.hl.lean .tactic').forEach(tactic => {
+        const toggle = tactic.querySelector('input.tactic-toggle');
+        if (toggle && !toggle.checked) closedTactics.add(tactic);
+      });
+      function isInsideClosedTactic(el) {
+        const tactic = el.closest('.tactic');
+        return tactic && tactic !== el && closedTactics.has(tactic);
+      }
+
+      const tokenSelector = '.hl.lean .const.token, .hl.lean .keyword.token, .hl.lean .literal.token, .hl.lean .option.token, .hl.lean .var.token, .hl.lean .typed.token, .hl.lean .has-info, .hl.lean .tactic, .hl.lean .level-var, .hl.lean .level-const, .hl.lean .level-op, .hl.lean .sort';
+      tippy(Array.from(document.querySelectorAll(tokenSelector)).filter(el => !isInsideClosedTactic(el)), defaultTippyProps);
+
+      // Create/destroy token tippys when tactic checkbox toggles
+      const tacticTippySelector = '.const.token, .keyword.token, .literal.token, .option.token, .var.token, .typed.token, .has-info, .level-var, .level-const, .level-op, .sort';
+      document.querySelectorAll('.hl.lean .tactic').forEach(tactic => {
+        const toggle = tactic.querySelector('input.tactic-toggle');
+        if (toggle) toggle.addEventListener('change', () => {
+          if (toggle.checked) {
+            closedTactics.delete(tactic);
+            tactic.querySelectorAll('.token').forEach(tok => {
+              if (!tok._tippy && tok.matches(tacticTippySelector)) {
+                tippy(tok, defaultTippyProps);
+              }
+            });
+          } else {
+            closedTactics.add(tactic);
+            tactic.querySelectorAll('.token').forEach(tok => {
+              if (tok._tippy) tok._tippy.destroy();
+            });
+          }
+        });
+      });
+  });
+}
+
+</script>
+    
+<script>
+      
+document.addEventListener("DOMContentLoaded", () => {
+    for (const m of document.querySelectorAll(".math.inline")) {
+        katex.render(m.textContent, m, {throwOnError: false, displayMode: false});
+    }
+    for (const m of document.querySelectorAll(".math.display")) {
+        katex.render(m.textContent, m, {throwOnError: false, displayMode: true});
+    }
+});
+</script>
+    
+<script src="-verso-data/popper.js"></script>
+    <script src="-verso-data/tippy.js"></script>
+    <link rel="stylesheet" href="-verso-data/default.css">
+    <link rel="stylesheet" href="-verso-data/tippy-border.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js" integrity="sha384-zbcZAIxlvJtNE3Dp5nxLXdXtXyxwOdnILY1TDPVmKFhl4r4nSUG1r8bcFXGVa4Te" crossorigin="anonymous"></script>
+    <link href="https://use.fontawesome.com/releases/v6.7.2/css/fontawesome.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v6.7.2/css/solid.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v6.7.2/css/brands.css" rel="stylesheet">
+    </head>
+  <body>
+    <header>
+      <div class="inner-wrap">
+        <nav class="top" role="navigation">
+          <ol>
+            <li class="home">
+              <a href="."><i class="fas fa-diagram-project"></i>Proof Sketches</a></li>
+            <li class="home">
+              <a href="./posts"><i class="fas fa-diagram-project"></i>Posts</a></li>
+            <li>
+              <i class="fa-solid fa-chalkboard-teacher"></i><a href="https://gmcninch.math.tufts.edu">George McNinch</a></li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+    <main><div class="wrap">
+        <h1>
+          Summer 2025 REU on Formalization</h1>
+        <div class="metadata">
+          <div class="authors">
+            <span class="author">George McNinch</span></div>
+          <div class="date">
+            2025-07-31</div>
+          </div>
+        <p>
+          This post supplements the <a href="https://gmcninch.math.tufts.edu/posts/2025-07--formalization-REU.html">post here</a></p>
+        <p>
+          Here I'm going to give examples of results formalized by the students
+during the summer program; (the actual proof(s) are elided here --
+that is what the statement <code>sorry</code> is all about -- but can be found
+in the <a href="https://github.com/gmcninch-tufts/VERSEIM-2025">repo</a>).</p>
+        <p>
+          We spent much of the time formalizing statements in <strong>linear algebra</strong>,
+for example in the following setting:</p>
+        <code class="hl lean block" data-lean-context="second"><span class="keyword token" data-binding="kw-occ-null-1121">noncomputable</span><span class="inter-text"> </span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.section-1121" data-verso-hover="9">section</span><span class="inter-text">     
+
+</span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.open-1149" data-verso-hover="10">open</span><span class="inter-text"> </span><span class="unknown token" data-binding="">Module</span><span class="inter-text">
+</span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.open-1161" data-verso-hover="10">open</span><span class="inter-text"> </span><span class="unknown token" data-binding="">LinearMap</span><span class="inter-text">
+</span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.open-1176" data-verso-hover="10">open</span><span class="inter-text"> </span><span class="unknown token" data-binding="">LinearMap</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="unknown token" data-binding="">)</span><span class="inter-text">
+
+--  V, V₁ and V₂ are vector spaces over the field k 
+</span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.variable-1261" data-verso-hover="12">variable</span><span class="inter-text">  </span><span class="unknown token" data-binding="">{</span><span class="var token" data-binding="var-_uniq.8208" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8210" data-verso-hover="13">V</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8212" data-verso-hover="13">V₁</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8214" data-verso-hover="13">V₂</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="unknown token" data-binding="">}</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Field" title="Mathlib docs for Field"><span class="const token" data-binding="const-Field" data-verso-hover="15">Field</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8208" data-verso-hover="13">k</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> 
+  </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8210" data-verso-hover="13">V</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8208" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8210" data-verso-hover="13">V</span><span class="unknown token" data-binding="">]</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8212" data-verso-hover="13">V₁</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8208" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8212" data-verso-hover="13">V₁</span><span class="unknown token" data-binding="">]</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8214" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8208" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8214" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">]</span><span class="inter-text">
+
+-- an isometry between (V₁,β₁) and (V₂,β₂) is a linear equivalence
+-- V₁ ≃ₗ[k] V₂ together with a proof that this equivalence is compatible 
+-- with the given bilinear forms
+
+</span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.structureTk-1606">structure</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Isometries" title="Mathlib docs for Isometries"><span class="const token" data-binding="const-Isometries" data-verso-hover="18">Isometries</span></a><span class="inter-text">
+  </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.2094" data-verso-hover="19">β₁</span><span class="unknown token" data-binding="">:</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8208" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8212" data-verso-hover="13">V₁</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> 
+  </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.2281" data-verso-hover="20">β₂</span><span class="unknown token" data-binding="">:</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8208" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8214" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">)</span><span class="inter-text">
+  </span><span class="keyword token" data-binding="kw-occ-null-1684">where</span><span class="inter-text">
+    -- the linear equivalence
+    </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Isometries.equiv" title="Mathlib docs for Isometries.equiv"><span class="const token" data-binding="const-Isometries.equiv" data-verso-hover="21">equiv</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8212" data-verso-hover="13">V₁</span><span class="inter-text"> </span><span class="unknown token" data-binding="">≃ₗ[</span><span class="var token" data-binding="var-_uniq.8208" data-verso-hover="13">k</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8214" data-verso-hover="13">V₂</span><span class="inter-text">     
+    -- the compatibility assertion    
+    </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Isometries.compat" title="Mathlib docs for Isometries.compat"><span class="const token" data-binding="const-Isometries.compat" data-verso-hover="22">compat</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="unknown token" data-binding="">∀</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.2863" data-verso-hover="23">x</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.2865" data-verso-hover="23">y</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8212" data-verso-hover="13">V₁</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.2094" data-verso-hover="19">β₁</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.2863" data-verso-hover="23">x</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.2865" data-verso-hover="23">y</span><span class="inter-text"> </span><span class="unknown token" data-binding="">=</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.2281" data-verso-hover="20">β₂</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.2860" data-verso-hover="24">equiv</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.2863" data-verso-hover="23">x</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.2860" data-verso-hover="24">equiv</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.2865" data-verso-hover="23">y</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> 
+
+-- Notation so that `V₁ ≃[k,β₁,β₂] V₂` denotes `Isometries β₁ β₂` 
+</span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.notation-1952">notation</span><span class="unknown token" data-binding="">:</span><span class="unknown token" data-binding="">100</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8979" data-verso-hover="25">lhs</span><span class="unknown token" data-binding="">:</span><span class="unknown token" data-binding="">100</span><span class="inter-text"> </span><span class="literal string token" data-binding="" data-verso-hover="26">"≃["</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8972" data-verso-hover="25">field</span><span class="unknown token" data-binding="">:</span><span class="unknown token" data-binding="">100</span><span class="inter-text"> </span><span class="literal string token" data-binding="" data-verso-hover="27">","</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8965" data-verso-hover="25">lhb</span><span class="unknown token" data-binding="">:</span><span class="unknown token" data-binding="">100</span><span class="inter-text"> </span><span class="literal string token" data-binding="" data-verso-hover="27">","</span><span class="inter-text"> 
+  </span><span class="var token" data-binding="var-_uniq.8958" data-verso-hover="25">rhb</span><span class="unknown token" data-binding="">:</span><span class="unknown token" data-binding="">100</span><span class="inter-text"> </span><span class="literal string token" data-binding="" data-verso-hover="28">"]"</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8951" data-verso-hover="25">rhs</span><span class="unknown token" data-binding="">:</span><span class="unknown token" data-binding="">100</span><span class="inter-text"> </span><span class="unknown token" data-binding="">=&gt;</span><span class="inter-text"> 
+  </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Isometries" title="Mathlib docs for Isometries"><span class="const token" data-binding="const-Isometries" data-verso-hover="18">Isometries</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="unknown token" data-binding="">k</span><span class="unknown token" data-binding="">:=</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8972" data-verso-hover="25">field</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="unknown token" data-binding="">V₁</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:=</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8979" data-verso-hover="25">lhs</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="unknown token" data-binding="">V₂</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:=</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8951" data-verso-hover="25">rhs</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8965" data-verso-hover="25">lhb</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.8958" data-verso-hover="25">rhb</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><section>
+          <h2>
+            <strong>isometries via bases</strong></h2>
+          <blockquote><p>
+              If <code class="math inline">(V_1,\beta_1)</code> and <code class="math inline">(V_2,\beta_2)</code> are pairs consisting of a
+  finite dimensional vector space together with a bilinear form, then
+  there is an isometry between <code class="math inline">V_1</code> and <code class="math inline">V_2</code> if and only if there
+  are bases <code class="math inline">b_1</code> of <code class="math inline">V_1</code> and <code class="math inline">b_2</code> of <code class="math inline">V_2</code> such that the matrix of
+  <code class="math inline">\beta_1</code> with respect to <code class="math inline">b_1</code> is the same as the matrix of
+  <code class="math inline">\beta_2</code> with respect to <code class="math inline">b_2</code>.</p>
+            </blockquote><p>
+            Here is the formal statement:</p>
+          <code class="hl lean block" data-lean-context="second"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.theorem-2559">theorem</span><span class="inter-text"> </span><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="verso-message warning"><span class="text"></span><span class="text">declaration uses `</span><span class="highlighted"><span class="inter-text"></span><span class="unknown token" data-binding="">sorry</span><span class="inter-text"></span></span><span class="text">`</span></code></span></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=equiv_via_matrices" title="Mathlib docs for equiv_via_matrices"><span class="const token" data-binding="const-equiv_via_matrices" data-verso-hover="29">equiv_via_matrices</span></a></span><span class="inter-text"> </span><span class="unknown token" data-binding="">{</span><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span><span class="unknown token" data-binding="">:</span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="unknown token" data-binding="">}</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Fintype" title="Mathlib docs for Fintype"><span class="const token" data-binding="const-Fintype" data-verso-hover="30">Fintype</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=DecidableEq" title="Mathlib docs for DecidableEq"><span class="const token" data-binding="const-DecidableEq" data-verso-hover="31">DecidableEq</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span><span class="unknown token" data-binding="">]</span><span class="inter-text">
+    </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.22768" data-verso-hover="19">β₁</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21930" data-verso-hover="13">V₁</span><span class="unknown token" data-binding="">)</span><span class="inter-text">   </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.22955" data-verso-hover="20">β₂</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21932" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> 
+    </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.22989" data-verso-hover="32">b₁</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module.Basis" title="Mathlib docs for Module.Basis"><span class="const token" data-binding="const-Module.Basis" data-verso-hover="33">Basis</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21930" data-verso-hover="13">V₁</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text">
+  </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Nonempty" title="Mathlib docs for Nonempty"><span class="const token" data-binding="const-Nonempty" data-verso-hover="34">Nonempty</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.21930" data-verso-hover="13">V₁</span><span class="inter-text"> </span><span class="unknown token" data-binding="">≃[</span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="unknown token" data-binding="">,</span><span class="var token" data-binding="var-_uniq.22768" data-verso-hover="19">β₁</span><span class="unknown token" data-binding="">,</span><span class="var token" data-binding="var-_uniq.22955" data-verso-hover="20">β₂</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21932" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">)</span><span class="inter-text">  </span><span class="unknown token" data-binding="">↔</span><span class="inter-text">  </span><span class="unknown token" data-binding="">∃</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23237" data-verso-hover="35">b₂</span><span class="unknown token" data-binding="">:</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module.Basis" title="Mathlib docs for Module.Basis"><span class="const token" data-binding="const-Module.Basis" data-verso-hover="33">Basis</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21932" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">,</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">(</span><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="verso-message warning"><span class="text"></span><span class="text">`</span><span class="highlighted"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=BilinForm.toMatrix" title="Mathlib docs for BilinForm.toMatrix"><span class="const token" data-binding="const-BilinForm.toMatrix" data-verso-hover="36">BilinForm.toMatrix</span></a><span class="inter-text"></span></span><span class="text">` has been deprecated</span><span class="text">: Use `</span><span class="highlighted"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.toMatrix" title="Mathlib docs for LinearMap.BilinForm.toMatrix"><span class="const token" data-binding="const-LinearMap.BilinForm.toMatrix" data-verso-hover="37">LinearMap.BilinForm.toMatrix</span></a><span class="inter-text"></span></span><span class="text">` instead</span><span class="text">
+</span><span class="text">
+</span><span class="text">Note: </span><span class="text">The updated constant is in a different namespace. Dot notation may need to be changed</span><span class="text"> (e.g., from `x.</span><span class="text">toMatrix</span><span class="text">` to `</span><span class="highlighted"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.toMatrix" title="Mathlib docs for LinearMap.BilinForm.toMatrix"><span class="const token" data-binding="const-LinearMap.BilinForm.toMatrix" data-verso-hover="37">LinearMap.BilinForm.toMatrix</span></a><span class="inter-text"></span></span><span class="text"> x`)</span><span class="text">.</span></code></span></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=BilinForm.toMatrix" title="Mathlib docs for BilinForm.toMatrix"><span class="const token" data-binding="const-BilinForm.toMatrix" data-verso-hover="36">BilinForm.toMatrix</span></a></span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22989" data-verso-hover="32">b₁</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22768" data-verso-hover="19">β₁</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">=</span><span class="inter-text">  </span><span class="unknown token" data-binding="">(</span><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="verso-message warning"><span class="text"></span><span class="text">`</span><span class="highlighted"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=BilinForm.toMatrix" title="Mathlib docs for BilinForm.toMatrix"><span class="const token" data-binding="const-BilinForm.toMatrix" data-verso-hover="36">BilinForm.toMatrix</span></a><span class="inter-text"></span></span><span class="text">` has been deprecated</span><span class="text">: Use `</span><span class="highlighted"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.toMatrix" title="Mathlib docs for LinearMap.BilinForm.toMatrix"><span class="const token" data-binding="const-LinearMap.BilinForm.toMatrix" data-verso-hover="37">LinearMap.BilinForm.toMatrix</span></a><span class="inter-text"></span></span><span class="text">` instead</span><span class="text">
+</span><span class="text">
+</span><span class="text">Note: </span><span class="text">The updated constant is in a different namespace. Dot notation may need to be changed</span><span class="text"> (e.g., from `x.</span><span class="text">toMatrix</span><span class="text">` to `</span><span class="highlighted"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.toMatrix" title="Mathlib docs for LinearMap.BilinForm.toMatrix"><span class="const token" data-binding="const-LinearMap.BilinForm.toMatrix" data-verso-hover="37">LinearMap.BilinForm.toMatrix</span></a><span class="inter-text"></span></span><span class="text"> x`)</span><span class="text">.</span></code></span></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=BilinForm.toMatrix" title="Mathlib docs for BilinForm.toMatrix"><span class="const token" data-binding="const-BilinForm.toMatrix" data-verso-hover="36">BilinForm.toMatrix</span></a></span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23237" data-verso-hover="35">b₂</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22955" data-verso-hover="20">β₂</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:=</span><span class="inter-text"> </span><span class="tactic"><label for="tactic-state-14827781614076137928-2864-2866-0"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-2864" data-verso-hover="38">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-14827781614076137928-2864-2866-0"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.21930" data-verso-hover="13">V₁</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.21932" data-verso-hover="13">V₂</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.21935" data-verso-hover="39">inst✝⁶</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Field" title="Mathlib docs for Field"><span class="const token" data-binding="const-Field" data-verso-hover="15">Field</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22145" data-verso-hover="40">inst✝⁵</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21930" data-verso-hover="13">V₁</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22349" data-verso-hover="41">inst✝⁴</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21930" data-verso-hover="13">V₁</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22352" data-verso-hover="42">inst✝³</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21932" data-verso-hover="13">V₂</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22556" data-verso-hover="43">inst✝²</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21932" data-verso-hover="13">V₂</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23715" data-verso-hover="44">inst✝¹</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Fintype" title="Mathlib docs for Fintype"><span class="const token" data-binding="const-Fintype" data-verso-hover="30">Fintype</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23716" data-verso-hover="45">inst✝</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=DecidableEq" title="Mathlib docs for DecidableEq"><span class="const token" data-binding="const-DecidableEq" data-verso-hover="31">DecidableEq</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22768" data-verso-hover="19">β₁</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21930" data-verso-hover="13">V₁</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22955" data-verso-hover="20">β₂</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21932" data-verso-hover="13">V₂</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.22989" data-verso-hover="32">b₁</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module.Basis" title="Mathlib docs for Module.Basis"><span class="const token" data-binding="const-Module.Basis" data-verso-hover="33">Basis</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22558" data-verso-hover="13">ι</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21926" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.21930" data-verso-hover="13">V₁</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Nonempty" title="Mathlib docs for Nonempty"><span class="const token" data-binding="const-Nonempty" data-verso-hover="34">Nonempty</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Isometries" title="Mathlib docs for Isometries"><span class="const token" data-binding="const-Isometries" data-verso-hover="18">Isometries</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22768" data-verso-hover="19">β₁</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22955" data-verso-hover="20">β₂</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Iff" title="Mathlib docs for Iff"><span class="const token" data-binding="const-Iff" data-verso-hover="46">↔</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">∃</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23765" data-verso-hover="35">b₂</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=BilinForm.toMatrix" title="Mathlib docs for BilinForm.toMatrix"><span class="const token" data-binding="const-BilinForm.toMatrix" data-verso-hover="36">BilinForm.toMatrix</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22989" data-verso-hover="32">b₁</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22768" data-verso-hover="19">β₁</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Eq" title="Mathlib docs for Eq"><span class="const token" data-binding="const-Eq" data-verso-hover="47">=</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=BilinForm.toMatrix" title="Mathlib docs for BilinForm.toMatrix"><span class="const token" data-binding="const-BilinForm.toMatrix" data-verso-hover="36">BilinForm.toMatrix</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23765" data-verso-hover="35">b₂</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.22955" data-verso-hover="20">β₂</span></span></span></span></span></span><span class="inter-text"> </span><span class="tactic"><label for="tactic-state-7-2867-2872-2"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-2867" data-verso-hover="48">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-2867-2872-2"><span class="tactic-state">All goals completed! 🐙</span></span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code></section>
+        <section>
+          <h2>
+            <strong>characterization of non-degenerate alternating forms</strong></h2>
+          <blockquote><p>
+              Any two non-degenerate alternating bilinear forms on spaces of the
+  same dimension are equivalent.</p>
+            </blockquote><code class="hl lean block" data-lean-context="second"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.definition-3055">def</span><span class="inter-text"> </span><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="verso-message warning"><span class="text"></span><span class="text">declaration uses `</span><span class="highlighted"><span class="inter-text"></span><span class="unknown token" data-binding="">sorry</span><span class="inter-text"></span></span><span class="text">`</span></code></span></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=alternate_iso" title="Mathlib docs for alternate_iso"><span class="const token" data-binding="const-alternate_iso" data-verso-hover="49">alternate_iso</span></a></span><span class="inter-text"> 
+    </span><span class="unknown token" data-binding="">{</span><span class="var token" data-binding="var-_uniq.24588" data-verso-hover="19">β₁</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span><span class="unknown token" data-binding="">}</span><span class="inter-text"> </span><span class="unknown token" data-binding="">{</span><span class="var token" data-binding="var-_uniq.24775" data-verso-hover="20">β₂</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">}</span><span class="inter-text"> 
+    </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.25547" data-verso-hover="50">balt₁</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.IsAlt" title="Mathlib docs for LinearMap.IsAlt"><span class="const token" data-binding="const-LinearMap.IsAlt" data-verso-hover="51">IsAlt</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.24588" data-verso-hover="19">β₁</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.26257" data-verso-hover="52">balt₂</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.IsAlt" title="Mathlib docs for LinearMap.IsAlt"><span class="const token" data-binding="const-LinearMap.IsAlt" data-verso-hover="51">IsAlt</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.24775" data-verso-hover="20">β₂</span><span class="unknown token" data-binding="">)</span><span class="inter-text">
+    </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.26272" data-verso-hover="53">hd₁</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.24588" data-verso-hover="19">β₁</span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.Nondegenerate" title="Mathlib docs for LinearMap.BilinForm.Nondegenerate"><span class="const token" data-binding="const-LinearMap.BilinForm.Nondegenerate" data-verso-hover="54">Nondegenerate</span></a><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.26287" data-verso-hover="55">hd₂</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.24775" data-verso-hover="20">β₂</span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.Nondegenerate" title="Mathlib docs for LinearMap.BilinForm.Nondegenerate"><span class="const token" data-binding="const-LinearMap.BilinForm.Nondegenerate" data-verso-hover="54">Nondegenerate</span></a><span class="unknown token" data-binding="">)</span><span class="inter-text"> 
+    </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=FiniteDimensional" title="Mathlib docs for FiniteDimensional"><span class="const token" data-binding="const-FiniteDimensional" data-verso-hover="56">FiniteDimensional</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=FiniteDimensional" title="Mathlib docs for FiniteDimensional"><span class="const token" data-binding="const-FiniteDimensional" data-verso-hover="56">FiniteDimensional</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">]</span><span class="inter-text">
+    </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.26723" data-verso-hover="57">h</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module.finrank" title="Mathlib docs for Module.finrank"><span class="const token" data-binding="const-Module.finrank" data-verso-hover="58">Module.finrank</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span><span class="inter-text"> </span><span class="unknown token" data-binding="">=</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module.finrank" title="Mathlib docs for Module.finrank"><span class="const token" data-binding="const-Module.finrank" data-verso-hover="58">Module.finrank</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> 
+       </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span><span class="inter-text"> </span><span class="unknown token" data-binding="">≃[</span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="unknown token" data-binding="">,</span><span class="var token" data-binding="var-_uniq.24588" data-verso-hover="19">β₁</span><span class="unknown token" data-binding="">,</span><span class="var token" data-binding="var-_uniq.24775" data-verso-hover="20">β₂</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:=</span><span class="inter-text"> </span><span class="tactic"><label for="tactic-state-6031388683025212583-3399-3401-3"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-3399" data-verso-hover="38">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-6031388683025212583-3399-3401-3"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23762" data-verso-hover="13">V</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23769" data-verso-hover="39">inst✝⁸</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Field" title="Mathlib docs for Field"><span class="const token" data-binding="const-Field" data-verso-hover="15">Field</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23772" data-verso-hover="59">inst✝⁷</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23762" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23976" data-verso-hover="60">inst✝⁶</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23762" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.23979" data-verso-hover="40">inst✝⁵</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.24183" data-verso-hover="41">inst✝⁴</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.24186" data-verso-hover="42">inst✝³</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.24390" data-verso-hover="43">inst✝²</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.24588" data-verso-hover="19">β₁</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.24775" data-verso-hover="20">β₂</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.25547" data-verso-hover="50">balt₁</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.IsAlt" title="Mathlib docs for LinearMap.IsAlt"><span class="const token" data-binding="const-LinearMap.IsAlt" data-verso-hover="51">IsAlt</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.24588" data-verso-hover="19">β₁</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26257" data-verso-hover="52">balt₂</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.IsAlt" title="Mathlib docs for LinearMap.IsAlt"><span class="const token" data-binding="const-LinearMap.IsAlt" data-verso-hover="51">IsAlt</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.24775" data-verso-hover="20">β₂</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26272" data-verso-hover="53">hd₁</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="var token" data-binding="var-_uniq.24588" data-verso-hover="19">β₁</span><span class="inter-text"></span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.Nondegenerate" title="Mathlib docs for LinearMap.BilinForm.Nondegenerate"><span class="const token" data-binding="const-LinearMap.BilinForm.Nondegenerate" data-verso-hover="54">Nondegenerate</span></a></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26287" data-verso-hover="55">hd₂</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="var token" data-binding="var-_uniq.24775" data-verso-hover="20">β₂</span><span class="inter-text"></span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.Nondegenerate" title="Mathlib docs for LinearMap.BilinForm.Nondegenerate"><span class="const token" data-binding="const-LinearMap.BilinForm.Nondegenerate" data-verso-hover="54">Nondegenerate</span></a></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26758" data-verso-hover="61">inst✝¹</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=FiniteDimensional" title="Mathlib docs for FiniteDimensional"><span class="const token" data-binding="const-FiniteDimensional" data-verso-hover="56">FiniteDimensional</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26759" data-verso-hover="62">inst✝</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=FiniteDimensional" title="Mathlib docs for FiniteDimensional"><span class="const token" data-binding="const-FiniteDimensional" data-verso-hover="56">FiniteDimensional</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.26723" data-verso-hover="57">h</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module.finrank" title="Mathlib docs for Module.finrank"><span class="const token" data-binding="const-Module.finrank" data-verso-hover="58">finrank</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23764" data-verso-hover="13">V₁</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Eq" title="Mathlib docs for Eq"><span class="const token" data-binding="const-Eq" data-verso-hover="47">=</span></a><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module.finrank" title="Mathlib docs for Module.finrank"><span class="const token" data-binding="const-Module.finrank" data-verso-hover="58">finrank</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23760" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.23766" data-verso-hover="13">V₂</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Isometries" title="Mathlib docs for Isometries"><span class="const token" data-binding="const-Isometries" data-verso-hover="18">Isometries</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.24588" data-verso-hover="19">β₁</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.24775" data-verso-hover="20">β₂</span></span></span></span></span></span><span class="inter-text"> 
+    </span><span class="tactic"><label for="tactic-state-7-3407-3412-5"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-3407" data-verso-hover="48">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-3407-3412-5"><span class="tactic-state">All goals completed! 🐙</span></span><span class="inter-text">
+  
+</span><span class="unknown token" data-binding=""></span></code></section>
+        <section>
+          <h2>
+            <strong>characterization of reflexive forms</strong></h2>
+          <blockquote><p>
+              A bilinear form $β$ is <strong>reflexive</strong> if <code class="math inline">β(x,y) = 0 \Rightarrow
+  β(y,x) = 0</code> for every <code class="math inline">x,y \in V</code>.</p>
+            </blockquote><p>
+            Any reflexive form is either alternating -- i.e. <code class="math inline">β(x,x) = 0</code> for
+every <code class="math inline">x</code> -- or symmetric  -- i.e. <code class="math inline">β(x,y) = β(y,x)</code> for all <code class="math inline">x,y</code>.</p>
+          <code class="hl lean block" data-lean-context="second"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.theorem-3732">theorem</span><span class="inter-text"> </span><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="verso-message warning"><span class="text"></span><span class="text">declaration uses `</span><span class="highlighted"><span class="inter-text"></span><span class="unknown token" data-binding="">sorry</span><span class="inter-text"></span></span><span class="text">`</span></code></span></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=refl_is_alt_or_symm" title="Mathlib docs for refl_is_alt_or_symm"><span class="const token" data-binding="const-refl_is_alt_or_symm" data-verso-hover="63">refl_is_alt_or_symm</span></a></span><span class="inter-text"> </span><span class="unknown token" data-binding="">{</span><span class="var token" data-binding="var-_uniq.28551" data-verso-hover="64">β</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27723" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27725" data-verso-hover="13">V</span><span class="unknown token" data-binding="">}</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.28566" data-verso-hover="65">h</span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28551" data-verso-hover="64">β</span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.IsRefl" title="Mathlib docs for LinearMap.BilinForm.IsRefl"><span class="const token" data-binding="const-LinearMap.BilinForm.IsRefl" data-verso-hover="66">IsRefl</span></a><span class="unknown token" data-binding="">)</span><span class="inter-text"> 
+    </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=FiniteDimensional" title="Mathlib docs for FiniteDimensional"><span class="const token" data-binding="const-FiniteDimensional" data-verso-hover="56">FiniteDimensional</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27723" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27725" data-verso-hover="13">V</span><span class="unknown token" data-binding="">]</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text">
+  </span><span class="var token" data-binding="var-_uniq.28551" data-verso-hover="64">β</span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.IsAlt" title="Mathlib docs for LinearMap.BilinForm.IsAlt"><span class="const token" data-binding="const-LinearMap.BilinForm.IsAlt" data-verso-hover="67">IsAlt</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">∨</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28551" data-verso-hover="64">β</span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.IsSymm" title="Mathlib docs for LinearMap.BilinForm.IsSymm"><span class="const token" data-binding="const-LinearMap.BilinForm.IsSymm" data-verso-hover="68">IsSymm</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">:=</span><span class="inter-text"> </span><span class="tactic"><label for="tactic-state-1978402985802805724-3854-3856-6"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-3854" data-verso-hover="38">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-1978402985802805724-3854-3856-6"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27723" data-verso-hover="13">k</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27725" data-verso-hover="13">V</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27732" data-verso-hover="39">inst✝³</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Field" title="Mathlib docs for Field"><span class="const token" data-binding="const-Field" data-verso-hover="15">Field</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27723" data-verso-hover="13">k</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27735" data-verso-hover="59">inst✝²</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27725" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.27939" data-verso-hover="60">inst✝¹</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27723" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27725" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28551" data-verso-hover="64">β</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm" title="Mathlib docs for LinearMap.BilinForm"><span class="const token" data-binding="const-LinearMap.BilinForm" data-verso-hover="11">BilinForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27723" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27725" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28566" data-verso-hover="65">h</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="var token" data-binding="var-_uniq.28551" data-verso-hover="64">β</span><span class="inter-text"></span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.IsRefl" title="Mathlib docs for LinearMap.BilinForm.IsRefl"><span class="const token" data-binding="const-LinearMap.BilinForm.IsRefl" data-verso-hover="66">IsRefl</span></a></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28808" data-verso-hover="69">inst✝</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=FiniteDimensional" title="Mathlib docs for FiniteDimensional"><span class="const token" data-binding="const-FiniteDimensional" data-verso-hover="56">FiniteDimensional</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27723" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.27725" data-verso-hover="13">V</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="inter-text"></span><span class="var token" data-binding="var-_uniq.28551" data-verso-hover="64">β</span><span class="inter-text"></span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.IsAlt" title="Mathlib docs for LinearMap.BilinForm.IsAlt"><span class="const token" data-binding="const-LinearMap.BilinForm.IsAlt" data-verso-hover="67">IsAlt</span></a><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Or" title="Mathlib docs for Or"><span class="const token" data-binding="const-Or" data-verso-hover="70">∨</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28551" data-verso-hover="64">β</span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=LinearMap.BilinForm.IsSymm" title="Mathlib docs for LinearMap.BilinForm.IsSymm"><span class="const token" data-binding="const-LinearMap.BilinForm.IsSymm" data-verso-hover="68">IsSymm</span></a></span></span></span></span></span><span class="inter-text"> </span><span class="tactic"><label for="tactic-state-7-3857-3862-8"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-3857" data-verso-hover="48">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-3857-3862-8"><span class="tactic-state">All goals completed! 🐙</span></span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code></section>
+        <section>
+          <h2>
+            <strong>Cassels-Pfister Theorem</strong></h2>
+          <blockquote><p>
+              Let φ be a quadratic form on the vector space <code class="math inline">V</code> and let <code class="math inline">f
+  \in k[X]</code>. If there is a vector <code class="math inline">v \in V \otimes_k k(X)</code> such that
+  <code class="math inline">\phi(v) = f</code> then there is a vector <code class="math inline">w \in V \otimes_k k[X]</code> such that
+  <code class="math inline">\phi(w) = f</code>.</p>
+            </blockquote><p>
+            (see [Elman, Karpenko & Merkurjev, "The algebraic and
+geometric theory of quadratic forms", Theorem 17.3]).</p>
+          <code class="hl lean block" data-lean-context="second"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.open-4256" data-verso-hover="10">open</span><span class="inter-text"> </span><span class="unknown token" data-binding="">Polynomial</span><span class="inter-text"> -- so we can write k[X] for `Polynomial k`
+
+</span><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.theorem-4316">theorem</span><span class="inter-text"> </span><span class="has-info warning"><span class="hover-container"><span class="hover-info messages"><code class="verso-message warning"><span class="text"></span><span class="text">declaration uses `</span><span class="highlighted"><span class="inter-text"></span><span class="unknown token" data-binding="">sorry</span><span class="inter-text"></span></span><span class="text">`</span></code></span></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=cassels_pfister" title="Mathlib docs for cassels_pfister"><span class="const token" data-binding="const-cassels_pfister" data-verso-hover="71">cassels_pfister</span></a></span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.29656" data-verso-hover="72">φ</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=QuadraticForm" title="Mathlib docs for QuadraticForm"><span class="const token" data-binding="const-QuadraticForm" data-verso-hover="73">QuadraticForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28830" data-verso-hover="13">V</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">[</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Invertible" title="Mathlib docs for Invertible"><span class="const token" data-binding="const-Invertible" data-verso-hover="74">Invertible</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="typed token" data-binding="" data-verso-hover="75">2</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">]</span><span class="inter-text">
+    </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.29959" data-verso-hover="76">f</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="unknown token" data-binding="">[X]</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.30300" data-verso-hover="77">v</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=TensorProduct" title="Mathlib docs for TensorProduct"><span class="const token" data-binding="const-TensorProduct" data-verso-hover="78">TensorProduct</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=RatFunc" title="Mathlib docs for RatFunc"><span class="const token" data-binding="const-RatFunc" data-verso-hover="79">RatFunc</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28830" data-verso-hover="13">V</span><span class="unknown token" data-binding="">)</span><span class="inter-text">          
+    </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.30620" data-verso-hover="80">h</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.29656" data-verso-hover="72">φ</span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=QuadraticForm.baseChange" title="Mathlib docs for QuadraticForm.baseChange"><span class="const token" data-binding="const-QuadraticForm.baseChange" data-verso-hover="81">baseChange</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=RatFunc" title="Mathlib docs for RatFunc"><span class="const token" data-binding="const-RatFunc" data-verso-hover="79">RatFunc</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.30300" data-verso-hover="77">v</span><span class="inter-text"> </span><span class="unknown token" data-binding="">=</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.29959" data-verso-hover="76">f</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">∃</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.30928" data-verso-hover="82">w</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=TensorProduct" title="Mathlib docs for TensorProduct"><span class="const token" data-binding="const-TensorProduct" data-verso-hover="78">TensorProduct</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="unknown token" data-binding="">[X]</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28830" data-verso-hover="13">V</span><span class="unknown token" data-binding="">)</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.29656" data-verso-hover="72">φ</span><span class="unknown token" data-binding="">.</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=QuadraticForm.baseChange" title="Mathlib docs for QuadraticForm.baseChange"><span class="const token" data-binding="const-QuadraticForm.baseChange" data-verso-hover="81">baseChange</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="unknown token" data-binding="">[X]</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.30928" data-verso-hover="82">w</span><span class="inter-text"> </span><span class="unknown token" data-binding="">=</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.29959" data-verso-hover="76">f</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:=</span><span class="inter-text"> </span><span class="tactic"><label for="tactic-state-3087667781733356649-4555-4557-9"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Term.byTactic-4555" data-verso-hover="38">by</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-3087667781733356649-4555-4557-9"><span class="tactic-state"><span class="goal"><span class="hypotheses"><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28830" data-verso-hover="13">V</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="sort token" data-binding="sort-7243200735919010059" data-verso-hover="14">Type</span><span class="inter-text"></span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28837" data-verso-hover="39">inst✝³</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Field" title="Mathlib docs for Field"><span class="const token" data-binding="const-Field" data-verso-hover="15">Field</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.28840" data-verso-hover="59">inst✝²</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=AddCommGroup" title="Mathlib docs for AddCommGroup"><span class="const token" data-binding="const-AddCommGroup" data-verso-hover="16">AddCommGroup</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28830" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29044" data-verso-hover="60">inst✝¹</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Module" title="Mathlib docs for Module"><span class="const token" data-binding="const-Module" data-verso-hover="17">Module</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28830" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29656" data-verso-hover="72">φ</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=QuadraticForm" title="Mathlib docs for QuadraticForm"><span class="const token" data-binding="const-QuadraticForm" data-verso-hover="73">QuadraticForm</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28830" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.31099" data-verso-hover="83">inst✝</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Invertible" title="Mathlib docs for Invertible"><span class="const token" data-binding="const-Invertible" data-verso-hover="74">Invertible</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">2</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.29959" data-verso-hover="76">f</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Polynomial" title="Mathlib docs for Polynomial"><span class="const token" data-binding="const-Polynomial" data-verso-hover="84">[X]</span></a></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.30300" data-verso-hover="77">v</span></span><span class="colon">:</span><span class="type"><span class="inter-text"></span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=TensorProduct" title="Mathlib docs for TensorProduct"><span class="const token" data-binding="const-TensorProduct" data-verso-hover="78">TensorProduct</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=RatFunc" title="Mathlib docs for RatFunc"><span class="const token" data-binding="const-RatFunc" data-verso-hover="79">RatFunc</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28830" data-verso-hover="13">V</span></span></span><span class="hypothesis"><span class="name"><span class="var token" data-binding="var-_uniq.30620" data-verso-hover="80">h</span></span><span class="colon">:</span><span class="type"><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=QuadraticForm.baseChange" title="Mathlib docs for QuadraticForm.baseChange"><span class="const token" data-binding="const-QuadraticForm.baseChange" data-verso-hover="81">QuadraticForm.baseChange</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=RatFunc" title="Mathlib docs for RatFunc"><span class="const token" data-binding="const-RatFunc" data-verso-hover="79">RatFunc</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.29656" data-verso-hover="72">φ</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.30300" data-verso-hover="77">v</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Eq" title="Mathlib docs for Eq"><span class="const token" data-binding="const-Eq" data-verso-hover="47">=</span></a><span class="inter-text"> </span><span class="unknown token" data-binding="">↑</span><span class="var token" data-binding="var-_uniq.29959" data-verso-hover="76">f</span></span></span></span><span class="conclusion"><span class="prefix">⊢ </span><span class="type"><span class="unknown token" data-binding="">∃</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.31129" data-verso-hover="82">w</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=QuadraticForm.baseChange" title="Mathlib docs for QuadraticForm.baseChange"><span class="const token" data-binding="const-QuadraticForm.baseChange" data-verso-hover="81">QuadraticForm.baseChange</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.28828" data-verso-hover="13">k</span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Polynomial" title="Mathlib docs for Polynomial"><span class="const token" data-binding="const-Polynomial" data-verso-hover="84">[X]</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.29656" data-verso-hover="72">φ</span><span class="unknown token" data-binding="">)</span><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.31129" data-verso-hover="82">w</span><span class="inter-text"> </span><a href="https://leanprover-community.github.io/mathlib4_docs/find/?pattern=Eq" title="Mathlib docs for Eq"><span class="const token" data-binding="const-Eq" data-verso-hover="47">=</span></a><span class="inter-text"> </span><span class="var token" data-binding="var-_uniq.29959" data-verso-hover="76">f</span></span></span></span></span></span><span class="inter-text"> </span><span class="tactic"><label for="tactic-state-7-4558-4563-11"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Tactic.tacticSorry-4558" data-verso-hover="48">sorry</span></label><input type="checkbox" class="tactic-toggle" id="tactic-state-7-4558-4563-11"><span class="tactic-state">All goals completed! 🐙</span></span><span class="inter-text">
+  
+</span><span class="unknown token" data-binding=""></span></code><p>
+            A formalized proof can be found in <a href="https://github.com/gmcninch-tufts/VERSEIM-2025/tree/main/VERSEIM2025/Forms/RationalFunctionFields">the repository,
+here</a>.</p>
+          </section>
+        </div>
+      </main></body>
+  <footer><nav>
+      <ol>
+        <li>
+          <a href="http://math.tufts.edu"><i class="fas fa-chalkboard"></i>Tufts Math</a></li>
+        <li>
+          <a href="https://gmcninch.gitlab.io/" title="Personal page"><i class="fa-solid fa-pen-nib"></i></a></li>
+        <li>
+          <a href="https://mathoverflow.net/users/4653/george-mcninch" title="math overflow"><i class="fab fa-stack-overflow"></i></a></li>
+        <li>
+          <a href="https://mathstodon.xyz/@stencilv" rel="me" title="mastodon"><i class="fab fa-mastodon"></i></a></li>
+        <li>
+          <a href="https://gitlab.com/gmcninch" title="gitlab"><i class="fab fa-gitlab"></i></a></li>
+        <li>
+          <a href="https://github.com/gmcninch" title="github"><i class="fab fa-github"></i></a></li>
+        </ol>
+      </nav>
+    </footer></html>
+
