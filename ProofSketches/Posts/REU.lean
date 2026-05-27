@@ -139,5 +139,5 @@ theorem cassels_pfister (φ : QuadraticForm k V) [Invertible (2 : k)]
 ```
   
 A formalized proof can be found in [the repository,
-here](https://github.com/gmcninch-tufts/VERSEIM-2025/tree/main/VERSEIM2025/Forms/RationalFunctionFields).
+here](https://github.com/gmcninch-prof/VERSEIM-2025/tree/main/VERSEIM2025/Forms/RationalFunctionFields).
 
