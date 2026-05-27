@@ -67,6 +67,7 @@ def primary : Template := do
     return {{
       <html>
         <head>
+          <base href="https://gmcninch.math.tufts.edu/proof-sketches/"/>        
           <meta charset="utf-8"/>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
           <meta name="color-scheme" content="light dark"/>
