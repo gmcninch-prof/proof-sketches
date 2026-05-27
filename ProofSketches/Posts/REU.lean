@@ -26,7 +26,7 @@ This post supplements the [post here](https://gmcninch.math.tufts.edu/posts/2025
 Here I'm going to give examples of results formalized by the students
 during the summer program; (the actual proof(s) are elided here --
 that is what the statement `sorry` is all about -- but can be found
-in the [repo](https://github.com/gmcninch-tufts/VERSEIM-2025)).
+in the [repo](https://github.com/gmcninch-prof/VERSEIM-2025)).
 
 We spent much of the time formalizing statements in *linear algebra*,
 for example in the following setting:
