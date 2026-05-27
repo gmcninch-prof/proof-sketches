@@ -106,7 +106,7 @@ def alternate_iso
 
 # *characterization of reflexive forms*
    
-> A bilinear form $β$ is *reflexive* if $`β(x,y) = 0 \Rightarrow
+> A bilinear form $`β` is *reflexive* if $`β(x,y) = 0 \Rightarrow
   β(y,x) = 0` for every $`x,y \in V`.
    
 Any reflexive form is either alternating -- i.e. $`β(x,x) = 0` for
