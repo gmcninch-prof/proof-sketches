@@ -1,6 +1,9 @@
+
 import VersoBlog
 open Verso Genre Blog
 
 #doc (Page) "Proof Sketches" =>
 
-Formalization of mathematics.
+This page contains discussion of formalization of mathematics via Lean.
+[See here](/posts/) for the posts.
+
