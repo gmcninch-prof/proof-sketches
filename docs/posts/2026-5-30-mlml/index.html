@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <link rel="icon" href="data:,">
-    <title>Proof Sketches</title><base href="./"><style>:root {
+    <title>MLML</title><base href="../.././"><style>:root {
     /** Typography **/
     /* The font family used for headers, ToC entries, etc */
     --verso-structure-font-family: "Helvetica Neue", "Segoe UI", "Roboto", Arial, sans-serif;
@@ -1003,13 +1003,40 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </header>
     <main><div class="wrap">
-        <div class="frontpage">
-          <h1>
-            Proof Sketches</h1>
-          <p>
-            This page contains discussion of formalization of mathematics via Lean.
-<a href="posts">See here</a> for the posts.</p>
+        <h1>
+          MLML</h1>
+        <div class="metadata">
+          <div class="authors">
+            <span class="author">George McNinch</span></div>
+          <div class="date">
+            2026-05-30</div>
           </div>
+        <p>
+          This post supplements the <a href="https://gmcninch.math.tufts.edu/posts/2026-05---Tools.html">post here</a>.</p>
+        <p>
+          I thought it might be a useful exercise to describe some of what goes into the tools described 
+in that earlier post.</p>
+        <p>
+          Mainly, I want to describe how the "markup language" <code>MLML</code> is implemented.</p>
+        <section>
+          <h2>
+            Tokenizer</h2>
+          <code class="hl lean block" data-lean-context="mlml"><span class="keyword token" data-binding="kw-occ-Lean.Parser.Command.inductive-538" data-verso-hover="76">inductive</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token" data-verso-hover="77">Token</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.ident" data-verso-hover="78">ident</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.5" data-verso-hover="79">s</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-String" data-verso-hover="80">String</span><span class="unknown token" data-binding="">)</span><span class="inter-text">   
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.strLit" data-verso-hover="81">strLit</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.8" data-verso-hover="79">s</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-String" data-verso-hover="80">String</span><span class="unknown token" data-binding="">)</span><span class="inter-text">  
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.natLit" data-verso-hover="82">natLit</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.11" data-verso-hover="83">n</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-Nat" data-verso-hover="84">Nat</span><span class="unknown token" data-binding="">)</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.boolLit" data-verso-hover="85">boolLit</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.14" data-verso-hover="86">b</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-Bool" data-verso-hover="87">Bool</span><span class="unknown token" data-binding="">)</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.lbrace" data-verso-hover="88">lbrace</span><span class="inter-text"> </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.rbrace" data-verso-hover="89">rbrace</span><span class="inter-text">      
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.lbracket" data-verso-hover="90">lbracket</span><span class="inter-text"> </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.rbracket" data-verso-hover="91">rbracket</span><span class="inter-text">  
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.comma" data-verso-hover="92">comma</span><span class="inter-text"> </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.colon" data-verso-hover="93">colon</span><span class="inter-text"> </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.equals" data-verso-hover="94">equals</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.eof" data-verso-hover="95">eof</span><span class="inter-text">
+  </span><span class="unknown token" data-binding="">|</span><span class="inter-text"> </span><span class="const token" data-binding="const-Token.comment" data-verso-hover="96">comment</span><span class="inter-text"> </span><span class="unknown token" data-binding="">(</span><span class="var token" data-binding="var-_uniq.17" data-verso-hover="79">s</span><span class="inter-text"> </span><span class="unknown token" data-binding="">:</span><span class="inter-text"> </span><span class="const token" data-binding="const-String" data-verso-hover="80">String</span><span class="unknown token" data-binding="">)</span><span class="inter-text">
+</span><span class="keyword token" data-binding="kw-occ-null-762">deriving</span><span class="inter-text"> </span><span class="const token" data-binding="const-Repr" data-verso-hover="97">Repr</span><span class="unknown token" data-binding="">,</span><span class="inter-text"> </span><span class="const token" data-binding="const-BEq" data-verso-hover="98">BEq</span><span class="inter-text">
+</span><span class="unknown token" data-binding=""></span></code><p>
+            The function <code>tokenize</code> then has signature
+<code>def tokenize (input : String) : List Token</code>.
+</p>
+          </section>
         </div>
       </main></body>
   <footer><nav>
