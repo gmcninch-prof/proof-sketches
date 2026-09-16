@@ -81,7 +81,8 @@ theorem squeeze (hu : seq_limit u ℓ) (hw : seq_limit w ℓ)
   sorry
 ```
 
-I was asked if you could combine `h` and `h'`. I said "no" but it is easy enough to just use a logical and symbol, of course:
+I was asked if one could combine `h` and `h'`. I said "no" but I should have shown how it 
+is easy enough to just make a single hypothesis using a logical `and` symbol, as follows:
 
 ```lean week1
 
@@ -93,16 +94,19 @@ theorem squeeze' (u v w : ℕ → ℝ) (ℓ : ℝ)
 ```
 
 
-Unlike some languages (Python, for instance, where `a <= b <= c` really does mean `a <= b` and `b <= c`, Lean has no chaining notation for `≤` at all. `a ≤ b ≤ c` is parsed the same way any nested binary operator would be — there's nothing relation-specific going on.
+Unlike some languages -- Python, for instance, where `a <= b <= c` really does mean `a <= b` and 
+`b <= c` -- Lean has no chaining notation for `≤` at all. Thus, `a ≤ b ≤ c` is parsed the same way 
+any nested binary operator would be — there's nothing relation-specific going on.
 
 In general,
-`a ≤ b ≤ c` could parse as `(a ≤ b) ≤ c`  or as `a ≤ (b ≤ c)`, neither of which is compatible with the desired outcome. Try it!:
+`a ≤ b ≤ c` doesn't even parse in Lean. You could try to view it as "left associative" by writing 
+`(a ≤ b) ≤ c`. Try it!:
 
 ```
 example (a b c : ℝ) : Prop := (a ≤ b) ≤ c
 ```
 
-Gives an error:
+You'll get an error:
 
 ```
 Expected type:
@@ -118,9 +122,12 @@ but is expected to have type
   Prop
 ```
 
-Lean is trying to compare the `Prop` `a ≤ b` with the real number `c`, which is an error.
+The expression `a ≤ b` is a term of type `Prop`, and Lean is trying to compare this term with the 
+real number `c`, which is an error.
 
-Note that in some sense long inequality chains are idiomatic in Lean — but through the `calc` tactic, which handles transitivity explicitly via the `Trans` typeclass, not through parser sugar on the relation `≤` itself.
+Note that in some sense long inequality chains are idiomatic in Lean — but through the `calc` tactic, 
+which handles transitivity explicitly via the `Trans` typeclass, not through parser syntactic 
+sugar on the relation `≤` itself.
 
 Here is an example:
 
@@ -133,6 +140,6 @@ example (a b c d : ℝ) (h1 : a ≤ b) (h2 : b < c) (h3 : c ≤ d) : a < d := by
 
 How to read this: we have the real numbers `a b c d` and we have some hypotheses. We want to prove `a < d`, and we incrementally do this using the `calc` tactic. In each line of the calc tactic, the `_` means "the right hand side of the previous line".
 
-The final relation symbol (`<`) isn't just copied from the goal — `calc` works it out from the individual steps: chaining `≤`, `<`, `≤` together yields `<`, since one strict step is enough to make the whole chain strict. This composition is handled automatically via Lean's `Trans` typeclass. 
+The final relation symbol (`<`) isn't just copied from the goal — `calc` works it out from the individual steps: chaining `≤`, `<`, `≤` together yields `<`, since one strict step is enough to make the whole chain strict. This composition is handled automatically via Lean's [`Trans` typeclass](https://leanprover-community.github.io/mathlib4_docs/Init/Prelude.html#Trans). 
 
 Eventually we'll talk about `typeclass`es!!
