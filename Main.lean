@@ -5,6 +5,7 @@ import ProofSketches.MyTheme
 import ProofSketches.Posts.REU
 import ProofSketches.Posts.Mlml
 import ProofSketches.Posts.Week1
+import ProofSketches.Posts.Week2
 
 open Verso Genre Blog Site Syntax 
 
@@ -29,6 +30,7 @@ def myblog : Site := site ProofSketches.FrontPage /
     ProofSketches.Posts.REU
     ProofSketches.Posts.Mlml
     ProofSketches.Posts.Week1
+    ProofSketches.Posts.Week2
 
 def main := blogMain theme myblog (linkTargets := linkTargets) (options := ["--output", "docs"])
 

@@ -131,32 +131,30 @@
  "18": "<code><span class=\"literal string\">\",\"</span> : String</code>",
  "17": "<code><span class=\"literal string\">\"≃[\"</span> : String</code>",
  "16": "<code>Lean.TSyntax `term</code>",
- "156": "<code><span class=\"literal string\">\"aaa\"</span> : String</code>",
- "155":
- "<code>List.Vector.cons.{u_1} {α : Type u_1} {n : ℕ} : α → List.Vector α n → List.Vector α n.succ</code><span class=\"sep\"></span><code class=\"docstring\">If `a : α` and `l : Vector α n`, then `cons a l`, is the vector of length `n + 1`\nwhose first element is a and with l as the rest of the list. </code>",
+ "155": "<code><span class=\"literal string\">\"aaa\"</span> : String</code>",
  "154":
- "<code>Nat.succ (n : ℕ) : ℕ</code><span class=\"sep\"></span><code class=\"docstring\">The successor of a natural number `n`.\n\nUsing `Nat.succ n` should usually be avoided in favor of `n + 1`, which is the [simp normal\nform](https://lean-lang.org/doc/reference/4.29.0/find/?domain=Verso.Genre.Manual.section&name=simp-normal-forms).\n</code>",
+ "<code>List.Vector.cons.{u_1} {α : Type u_1} {n : ℕ} : α → List.Vector α n → List.Vector α n.succ</code><span class=\"sep\"></span><code class=\"docstring\">If `a : α` and `l : Vector α n`, then `cons a l`, is the vector of length `n + 1`\nwhose first element is a and with l as the rest of the list. </code>",
  "153":
- "<code>List.Vector.nil.{u_1} {α : Type u_1} : List.Vector α 0</code><span class=\"sep\"></span><code class=\"docstring\">The empty vector with elements of type `α` </code>",
+ "<code>Nat.succ (n : ℕ) : ℕ</code><span class=\"sep\"></span><code class=\"docstring\">The successor of a natural number `n`.\n\nUsing `Nat.succ n` should usually be avoided in favor of `n + 1`, which is the [simp normal\nform](https://lean-lang.org/doc/reference/4.29.0/find/?domain=Verso.Genre.Manual.section&name=simp-normal-forms).\n</code>",
  "152":
- "<code class=\"docstring\">`match` performs case analysis on one or more expressions.\nSee [Induction and Recursion][tpil4].\nThe syntax for the `match` tactic is the same as term-mode `match`, except that\nthe match arms are tactics instead of expressions.\n```\nexample (n : Nat) : n = n := by\n  match n with\n  | 0 =&gt; rfl\n  | i+1 =&gt; simp\n```\n\n[tpil4]: https://lean-lang.org/theorem_proving_in_lean4/induction_and_recursion.html\n</code>",
+ "<code>List.Vector.nil.{u_1} {α : Type u_1} : List.Vector α 0</code><span class=\"sep\"></span><code class=\"docstring\">The empty vector with elements of type `α` </code>",
  "151":
+ "<code class=\"docstring\">`match` performs case analysis on one or more expressions.\nSee [Induction and Recursion][tpil4].\nThe syntax for the `match` tactic is the same as term-mode `match`, except that\nthe match arms are tactics instead of expressions.\n```\nexample (n : Nat) : n = n := by\n  match n with\n  | 0 =&gt; rfl\n  | i+1 =&gt; simp\n```\n\n[tpil4]: https://lean-lang.org/theorem_proving_in_lean4/induction_and_recursion.html\n</code>",
+ "150":
  "<code>List.Vector.{u} (α : Type u) (n : ℕ) : Type u</code><span class=\"sep\"></span><code class=\"docstring\">`List.Vector α n` is the type of lists of length `n` with elements of type `α`.\n\nNote that there is also `Vector α n` in the root namespace,\nwhich is the type of *arrays* of length `n` with elements of type `α`.\n\nTypically, if you are doing programming or verification, you will primarily use `Vector α n`,\nand if you are doing mathematics, you may want to use `List.Vector α n` instead.\n</code>",
- "150": "<code>rept {α : Type} : α → (n : ℕ) → List.Vector α n</code>",
  "15": "<code>V₁ ≃ₗ[k] V₂</code>",
- "149": "<code>modus_ponens_shorter {p q : Prop} : (p → q) → p → q</code>",
- "148":
- "<code class=\"docstring\">`exact e` closes the main goal if its target type matches that of `e`.\n</code>",
+ "149": "<code>rept {α : Type} : α → (n : ℕ) → List.Vector α n</code>",
+ "148": "<code>modus_ponens_shorter {p q : Prop} : (p → q) → p → q</code>",
  "147":
+ "<code class=\"docstring\">`exact e` closes the main goal if its target type matches that of `e`.\n</code>",
+ "146":
  "<code class=\"docstring\">Introduces one or more hypotheses, optionally naming and/or pattern-matching them.\nFor each hypothesis to be introduced, the remaining main goal's target type must\nbe a `let` or function type.\n\n* `intro` by itself introduces one anonymous hypothesis, which can be accessed\n  by e.g. `assumption`. It is equivalent to `intro _`.\n* `intro x y` introduces two hypotheses and names them. Individual hypotheses\n  can be anonymized via `_`, given a type ascription, or matched against a pattern:\n  ```lean\n  -- ... ⊢ α × β → ...\n  intro (a, b)\n  -- ..., a : α, b : β ⊢ ...\n  ```\n* `intro rfl` is short for `intro h; subst h`, if `h` is an equality where the left-hand or right-hand side\n  is a variable.\n* Alternatively, `intro` can be combined with pattern matching much like `fun`:\n  ```lean\n  intro\n  | n + 1, 0 =&gt; tac\n  | ...\n  ```\n</code>",
- "146": "<code>p</code>",
- "145": "<code>p → q</code>",
- "144": "<code>Prop</code>",
- "143": "<code>modus_ponens {p q : Prop} (f : p → q) (h : p) : q</code>",
- "142":
- "<code class=\"docstring\">The `simp` tactic uses lemmas and hypotheses to simplify the main goal target or\nnon-dependent hypotheses. It has many variants:\n- `simp` simplifies the main goal target using lemmas tagged with the attribute `[simp]`.\n- `simp [h₁, h₂, ..., hₙ]` simplifies the main goal target using the lemmas tagged\n  with the attribute `[simp]` and the given `hᵢ`'s, where the `hᵢ`'s are expressions.-\n- If an `hᵢ` is a defined constant `f`, then `f` is unfolded. If `f` has equational lemmas associated\n  with it (and is not a projection or a `reducible` definition), these are used to rewrite with `f`.\n- `simp [*]` simplifies the main goal target using the lemmas tagged with the\n  attribute `[simp]` and all hypotheses.\n- `simp only [h₁, h₂, ..., hₙ]` is like `simp [h₁, h₂, ..., hₙ]` but does not use `[simp]` lemmas.\n- `simp [-id₁, ..., -idₙ]` simplifies the main goal target using the lemmas tagged\n  with the attribute `[simp]`, but removes the ones named `idᵢ`.\n- `simp at h₁ h₂ ... hₙ` simplifies the hypotheses `h₁ : T₁` ... `hₙ : Tₙ`. If\n  the target or another hypothesis depends on `hᵢ`, a new simplified hypothesis\n  `hᵢ` is introduced, but the old one remains in the local context.\n- `simp at *` simplifies all the hypotheses and the target.\n- `simp [*] at *` simplifies target and all (propositional) hypotheses using the\n  other hypotheses.\n</code>",
+ "145": "<code>p</code>",
+ "144": "<code>p → q</code>",
+ "143": "<code>Prop</code>",
+ "142": "<code>modus_ponens {p q : Prop} (f : p → q) (h : p) : q</code>",
  "141":
- "<code class=\"docstring\">`trace_state` displays the current state in the info view. </code>",
+ "<code class=\"docstring\">The `simp` tactic uses lemmas and hypotheses to simplify the main goal target or\nnon-dependent hypotheses. It has many variants:\n- `simp` simplifies the main goal target using lemmas tagged with the attribute `[simp]`.\n- `simp [h₁, h₂, ..., hₙ]` simplifies the main goal target using the lemmas tagged\n  with the attribute `[simp]` and the given `hᵢ`'s, where the `hᵢ`'s are expressions.-\n- If an `hᵢ` is a defined constant `f`, then `f` is unfolded. If `f` has equational lemmas associated\n  with it (and is not a projection or a `reducible` definition), these are used to rewrite with `f`.\n- `simp [*]` simplifies the main goal target using the lemmas tagged with the\n  attribute `[simp]` and all hypotheses.\n- `simp only [h₁, h₂, ..., hₙ]` is like `simp [h₁, h₂, ..., hₙ]` but does not use `[simp]` lemmas.\n- `simp [-id₁, ..., -idₙ]` simplifies the main goal target using the lemmas tagged\n  with the attribute `[simp]`, but removes the ones named `idᵢ`.\n- `simp at h₁ h₂ ... hₙ` simplifies the hypotheses `h₁ : T₁` ... `hₙ : Tₙ`. If\n  the target or another hypothesis depends on `hᵢ`, a new simplified hypothesis\n  `hᵢ` is introduced, but the old one remains in the local context.\n- `simp at *` simplifies all the hypotheses and the target.\n- `simp [*] at *` simplifies target and all (propositional) hypotheses using the\n  other hypotheses.\n</code>",
  "140":
  "<code>Membership.mem.{u, v} {α : outParam (Type u)} {γ : Type v} [self : Membership α γ] : γ → α → Prop</code><span class=\"sep\"></span><code class=\"docstring\">The membership relation `a ∈ s : Prop` where `a : α`, `s : γ`. \n\nConventions for notations in identifiers:\n\n * The recommended spelling of `∈` in identifiers is `mem`.</code>",
  "14": "<code>V₁</code>",
