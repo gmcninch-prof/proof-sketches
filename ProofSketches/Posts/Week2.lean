@@ -95,14 +95,16 @@ theorem modus_ponens {p q : Prop} : (f : p → q) → (h : p)  → q := by
   exact f h
 ```
 
-The signature of this refers to the type of the parameters together with 
-the type that is being produced. In this case, the resulting type is 
+The signature of a definition or theorem says what it takes as input and what it produces: 
+it lists the arguments, each with its type, and the type of the result. For a theorem, the 
+arguments are the hypotheses and the result type is the statement being proved.
+
+The type of `modus_ponens` as stated is
 ```
 (f : p → q) → (h : p)  → q
 ```
 
-In this case, there is no real reason for introducing names for the terms in the signature.
-
+But in this case, there is no real reason for introducing names for the terms in the signature.
 Thus, we could have written
 
 ```lean week2
